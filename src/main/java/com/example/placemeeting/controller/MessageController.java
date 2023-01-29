@@ -1,6 +1,6 @@
 package com.example.placemeeting.controller;
 
-import com.example.placemeeting.model.ChatMessage;
+import com.example.placemeeting.domain.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;

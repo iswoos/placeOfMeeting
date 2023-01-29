@@ -1,6 +1,6 @@
 package com.example.placemeeting.service;
 
-import com.example.placemeeting.model.ChatRoom;
+import com.example.placemeeting.domain.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

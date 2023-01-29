@@ -1,4 +1,4 @@
-package com.example.placemeeting.model;
+package com.example.placemeeting.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

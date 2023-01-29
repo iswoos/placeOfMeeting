@@ -1,7 +1,7 @@
 package com.example.placemeeting.controller;
 
 
-import com.example.placemeeting.model.ChatRoom;
+import com.example.placemeeting.domain.ChatRoom;
 import com.example.placemeeting.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
