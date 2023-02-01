@@ -22,12 +22,17 @@ public class Member extends BaseEntity {
     private String userId;
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String nickName;
+
     @NotBlank
     private String phoneNumber;
 
     public Member(MemberRequest memberRequest) {
         this.userId = memberRequest.getUserId();
         this.password = memberRequest.getPassword();
+        this.nickName = memberRequest.getNickName();
         this.phoneNumber = memberRequest.getPhoneNumber();
     }
 

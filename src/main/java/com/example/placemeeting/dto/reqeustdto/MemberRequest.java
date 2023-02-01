@@ -13,12 +13,17 @@ public class MemberRequest {
     private String userId;
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String nickName;
+
     @NotBlank
     private String phoneNumber;
 
-    public MemberRequest(String userId, String password, String phoneNumber) {
+    public MemberRequest(String userId, String password, String nickName, String phoneNumber) {
         this.userId = userId;
         this.password = password;
+        this.nickName = nickName;
         this.phoneNumber = phoneNumber;
     }
 
