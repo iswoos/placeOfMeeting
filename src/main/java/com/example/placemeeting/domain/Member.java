@@ -1,6 +1,6 @@
 package com.example.placemeeting.domain;
 
-import com.example.placemeeting.dto.reqeustdto.MemberReqDto;
+import com.example.placemeeting.dto.reqeustdto.MemberRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,19 +13,22 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Member extends TimeStamped {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private String userId;
+    private String userName;
     @NotBlank
     private String password;
+    @NotBlank
+    private String phoneNumber;
 
-    public Member(MemberReqDto memberReqDto) {
-        this.userId = memberReqDto.getUserId();
-        this.password = memberReqDto.getPassword();
+    public Member(MemberRequest memberRequest) {
+        this.userName = memberRequest.getUserName();
+        this.password = memberRequest.getPassword();
+        this.phoneNumber = memberRequest.getPhoneNumber();
     }
 
 }

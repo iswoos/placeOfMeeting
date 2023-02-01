@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+## 별도 처리 ##
+**/application.yml
+**/admin-number.yml
+**/application.properties
