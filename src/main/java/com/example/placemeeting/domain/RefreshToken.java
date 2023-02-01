@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Entity
 @NoArgsConstructor
-public class RefreshToken extends TimeStamped {
+public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,16 +20,15 @@ public class RefreshToken extends TimeStamped {
     @NotBlank
     private String refreshToken;
     @NotBlank
-    private String userId;
+    private String userName;
 
-    public RefreshToken(String token, String userId) {
+    public RefreshToken(String token, String userName) {
         this.refreshToken = token;
-        this.userId = userId;
+        this.userName = userName;
     }
 
     public RefreshToken updateToken(String token) {
         this.refreshToken = token;
         return this;
     }
-
 }

@@ -1,7 +1,7 @@
 package com.example.placemeeting.jwt.filter;
 
 
-import com.example.placemeeting.global.ResponseDto;
+import com.example.placemeeting.global.dto.GlobalResDto;
 import com.example.placemeeting.jwt.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,29 +27,35 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
+        String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
 
-        if(accessToken != null){
+        if(accessToken != null) {
             if(!jwtUtil.tokenValidation(accessToken)){
-                jwtExceptionHandler(response);
+                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.BAD_REQUEST);
                 return;
             }
-            setAuthentication(jwtUtil.getUserId(accessToken));
+            setAuthentication(jwtUtil.getuserNameFromToken(accessToken));
+        }else if(refreshToken != null) {
+            if(!jwtUtil.refreshTokenValidation(refreshToken)){
+                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
+                return;
+            }
+            setAuthentication(jwtUtil.getuserNameFromToken(refreshToken));
         }
 
         filterChain.doFilter(request,response);
     }
 
-    public void setAuthentication(String UserId) {
-        Authentication authentication = jwtUtil.createAuthentication(UserId);
+    public void setAuthentication(String userName) {
+        Authentication authentication = jwtUtil.createAuthentication(userName);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public void jwtExceptionHandler(HttpServletResponse response) {
+    public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus status) {
+        response.setStatus(status.value());
         response.setContentType("application/json");
-        response.setCharacterEncoding("utf-8");
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         try {
-            String json = new ObjectMapper().writeValueAsString(ResponseDto.fails(HttpStatus.UNAUTHORIZED,"TOKEN이 만료되었습니다"));
+            String json = new ObjectMapper().writeValueAsString(new GlobalResDto(msg, status.value()));
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());

@@ -1,6 +1,5 @@
 package com.example.placemeeting.security.user;
 
-
 import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final MemberRepository accountRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        Member account = memberRepository.findByUserId(userId).orElseThrow(
+        Member account = accountRepository.findByuserName(userName).orElseThrow(
                 () -> new RuntimeException("Not Found Account")
         );
 

@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TokenDto {
 
-    private String Authorization;
-    private String Refresh_Token;
+    private String accessToken;
+    private String refreshToken;
 
     public TokenDto(String accessToken, String refreshToken) {
-        this.Authorization = accessToken;
-        this.Refresh_Token = refreshToken;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 
 }
