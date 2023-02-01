@@ -19,15 +19,20 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private String userName;
+    private String userId;
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String userName;
+
     @NotBlank
     private String phoneNumber;
 
     public Member(MemberRequest memberRequest) {
-        this.userName = memberRequest.getUserName();
+        this.userId = memberRequest.getUserId();
         this.password = memberRequest.getPassword();
+        this.userName = memberRequest.getUserName();
         this.phoneNumber = memberRequest.getPhoneNumber();
     }
 

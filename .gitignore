@@ -38,5 +38,6 @@ out/
 
 ## 별도 처리 ##
 **/application.yml
+**/jwt.yml
 **/admin-number.yml
 **/application.properties

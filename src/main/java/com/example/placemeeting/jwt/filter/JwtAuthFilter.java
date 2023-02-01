@@ -1,12 +1,13 @@
 package com.example.placemeeting.jwt.filter;
 
 
-import com.example.placemeeting.global.dto.GlobalResDto;
+import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.jwt.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,22 +23,31 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
         String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
 
         if(accessToken != null) {
             if(!jwtUtil.tokenValidation(accessToken)){
-                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.BAD_REQUEST);
+                response.setContentType("application/json; charset=UTF-8");
+                response.setStatus(401);
+
+                ResponseDto<Object> fail = ResponseDto.fail(401,HttpStatus.UNAUTHORIZED,"로그인이 필요합니다.");
+                String responseDto = objectMapper.writeValueAsString(fail);
+                response.getWriter().write(responseDto);
+//                log.info("====== JwtAuthFilter.doFilterInternal.accessToken.tokenValidation == false =====");
+//                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
                 return;
             }
             setAuthentication(jwtUtil.getuserNameFromToken(accessToken));
         }else if(refreshToken != null) {
             if(!jwtUtil.refreshTokenValidation(refreshToken)){
-                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
+                log.info("====== JwtAuthFilter.doFilterInternal.refreshToken.tokenValidation == false =====");
+                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.UNAUTHORIZED);
                 return;
             }
             setAuthentication(jwtUtil.getuserNameFromToken(refreshToken));
@@ -46,8 +56,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 
-    public void setAuthentication(String userName) {
-        Authentication authentication = jwtUtil.createAuthentication(userName);
+    public void setAuthentication(String username) {
+        Authentication authentication = jwtUtil.createAuthentication(username);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
@@ -55,7 +65,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         response.setStatus(status.value());
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(new GlobalResDto(msg, status.value()));
+            String json = new ObjectMapper().writeValueAsString(ResponseEntity.status(HttpStatus.UNAUTHORIZED));
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());
