@@ -5,7 +5,9 @@ import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.domain.RefreshToken;
 import com.example.placemeeting.dto.reqeustdto.LoginRequest;
 import com.example.placemeeting.dto.reqeustdto.MemberRequest;
-import com.example.placemeeting.global.dto.GlobalResDto;
+import com.example.placemeeting.exception.CustomCommonException;
+import com.example.placemeeting.exception.ErrorCode;
+import com.example.placemeeting.global.dto.MemberResDto;
 import com.example.placemeeting.jwt.dto.TokenDto;
 import com.example.placemeeting.jwt.util.JwtUtil;
 import com.example.placemeeting.repository.MemberRepository;
@@ -25,32 +27,37 @@ public class MemberService {
 
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-    private final MemberRepository accountRepository;
+    private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public GlobalResDto signup(MemberRequest accountReqDto) {
-        // userName 중복 검사
-        if(accountRepository.findByuserId(accountReqDto.getUserId()).isPresent()){
-            throw new RuntimeException("Overlap Check");
+    public MemberResDto signup(MemberRequest memberReqDto) {
+        // userId 중복 검사
+        if(memberRepository.findByuserId(memberReqDto.getUserId()).isPresent()){
+            throw new CustomCommonException(ErrorCode.DUPLICATE_ID);
         }
 
-        accountReqDto.setEncodePwd(passwordEncoder.encode(accountReqDto.getPassword()));
-        Member account = new Member(accountReqDto);
+        // username 중복 검사
+        if(memberRepository.findByuserName(memberReqDto.getUserName()).isPresent()){
+            throw new CustomCommonException(ErrorCode.DUPLICATE_USERNAME);
+        }
 
-        accountRepository.save(account);
-        return new GlobalResDto("Success signup", HttpStatus.OK.value());
+        memberReqDto.setEncodePwd(passwordEncoder.encode(memberReqDto.getPassword()));
+        Member member = new Member(memberReqDto);
+
+        memberRepository.save(member);
+        return new MemberResDto("Success signup", HttpStatus.OK.value());
     }
 
     @Transactional
-    public GlobalResDto login(LoginRequest loginReqDto, HttpServletResponse response) {
+    public MemberResDto login(LoginRequest loginReqDto, HttpServletResponse response) {
 
-        Member account = accountRepository.findByuserId(loginReqDto.getUserId()).orElseThrow(
-                () -> new RuntimeException("Not found Account")
+        Member account = memberRepository.findByuserId(loginReqDto.getUserId()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
         );
 
         if(!passwordEncoder.matches(loginReqDto.getPassword(), account.getPassword())) {
-            throw new RuntimeException("Not matches Password");
+            throw new CustomCommonException(ErrorCode.NOT_EQUAL_PASSWORD);
         }
 
         TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserId());
@@ -66,7 +73,7 @@ public class MemberService {
 
         setHeader(response, tokenDto);
 
-        return new GlobalResDto("Success Login", HttpStatus.OK.value());
+        return new MemberResDto("Success Login", HttpStatus.OK.value());
 
     }
 

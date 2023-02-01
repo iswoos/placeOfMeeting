@@ -2,7 +2,7 @@ package com.example.placemeeting.controller;
 
 import com.example.placemeeting.dto.reqeustdto.LoginRequest;
 import com.example.placemeeting.dto.reqeustdto.MemberRequest;
-import com.example.placemeeting.global.dto.GlobalResDto;
+import com.example.placemeeting.global.dto.MemberResDto;
 import com.example.placemeeting.jwt.util.JwtUtil;
 import com.example.placemeeting.security.user.UserDetailsImpl;
 import com.example.placemeeting.service.MemberService;
@@ -15,27 +15,26 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final JwtUtil jwtUtil;
-    private final MemberService accountService;
+    private final MemberService memberService;
 
     @PostMapping("/members/signup")
-    public GlobalResDto signup(@RequestBody @Valid MemberRequest accountReqDto) {
-        return accountService.signup(accountReqDto);
+    public MemberResDto signup(@RequestBody @Valid MemberRequest memberReqDto) {
+        return memberService.signup(memberReqDto);
     }
 
     @PostMapping("/members/login")
-    public GlobalResDto login(@RequestBody @Valid LoginRequest loginReqDto, HttpServletResponse response) {
-        return accountService.login(loginReqDto, response);
+    public MemberResDto login(@RequestBody @Valid LoginRequest loginReqDto, HttpServletResponse response) {
+        return memberService.login(loginReqDto, response);
     }
 
     @GetMapping("/issue/token")
-    public GlobalResDto issuedToken(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response){
+    public MemberResDto issuedToken(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response){
         response.addHeader(JwtUtil.ACCESS_TOKEN, jwtUtil.createToken(userDetails.getAccount().getUserId(), "Access"));
-        return new GlobalResDto("Success IssuedToken", HttpStatus.OK.value());
+        return new MemberResDto("Success IssuedToken", HttpStatus.OK.value());
     }
 
 }
