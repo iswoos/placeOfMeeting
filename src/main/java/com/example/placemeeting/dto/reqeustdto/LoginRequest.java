@@ -10,12 +10,12 @@ import javax.validation.constraints.NotBlank;
 public class LoginRequest {
 
     @NotBlank
-    private String userName;
+    private String userId;
     @NotBlank
     private String password;
 
-    public LoginRequest(String userName, String password) {
-        this.userName = userName;
+    public LoginRequest(String userId, String password) {
+        this.userId = userId;
         this.password = password;
     }
 

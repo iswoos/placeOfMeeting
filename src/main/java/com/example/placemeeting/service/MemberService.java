@@ -31,7 +31,7 @@ public class MemberService {
     @Transactional
     public GlobalResDto signup(MemberRequest accountReqDto) {
         // userName 중복 검사
-        if(accountRepository.findByuserName(accountReqDto.getUserName()).isPresent()){
+        if(accountRepository.findByuserId(accountReqDto.getUserId()).isPresent()){
             throw new RuntimeException("Overlap Check");
         }
 
@@ -45,7 +45,7 @@ public class MemberService {
     @Transactional
     public GlobalResDto login(LoginRequest loginReqDto, HttpServletResponse response) {
 
-        Member account = accountRepository.findByuserName(loginReqDto.getUserName()).orElseThrow(
+        Member account = accountRepository.findByuserId(loginReqDto.getUserId()).orElseThrow(
                 () -> new RuntimeException("Not found Account")
         );
 
@@ -53,14 +53,14 @@ public class MemberService {
             throw new RuntimeException("Not matches Password");
         }
 
-        TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserName());
+        TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserId());
 
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByuserName(loginReqDto.getUserName());
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByuserId(loginReqDto.getUserId());
 
         if(refreshToken.isPresent()) {
             refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
         }else {
-            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), loginReqDto.getUserName());
+            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), loginReqDto.getUserId());
             refreshTokenRepository.save(newToken);
         }
 

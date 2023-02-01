@@ -10,14 +10,14 @@ import javax.validation.constraints.NotBlank;
 public class MemberRequest {
 
     @NotBlank
-    private String userName;
+    private String userId;
     @NotBlank
     private String password;
     @NotBlank
     private String phoneNumber;
 
-    public MemberRequest(String userName, String password, String phoneNumber) {
-        this.userName = userName;
+    public MemberRequest(String userId, String password, String phoneNumber) {
+        this.userId = userId;
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
