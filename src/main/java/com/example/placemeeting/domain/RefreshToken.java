@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Entity
 @NoArgsConstructor
-public class RefreshToken {
+public class RefreshToken extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +20,11 @@ public class RefreshToken {
     @NotBlank
     private String refreshToken;
     @NotBlank
-    private String userName;
+    private String userId;
 
-    public RefreshToken(String token, String userName) {
+    public RefreshToken(String token, String userId) {
         this.refreshToken = token;
-        this.userName = userName;
+        this.userId = userId;
     }
 
     public RefreshToken updateToken(String token) {

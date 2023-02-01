@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
     private String password;
 
     @NotBlank
-    private String nickName;
+    private String userName;
 
     @NotBlank
     private String phoneNumber;
@@ -32,7 +32,7 @@ public class Member extends BaseEntity {
     public Member(MemberRequest memberRequest) {
         this.userId = memberRequest.getUserId();
         this.password = memberRequest.getPassword();
-        this.nickName = memberRequest.getNickName();
+        this.userName = memberRequest.getUserName();
         this.phoneNumber = memberRequest.getPhoneNumber();
     }
 
