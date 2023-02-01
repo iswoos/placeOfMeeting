@@ -1,6 +1,6 @@
 package com.example.placemeeting.exception;
 
-import com.example.placemeeting.global.ResponseDto;
+import com.example.placemeeting.global.dto.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
