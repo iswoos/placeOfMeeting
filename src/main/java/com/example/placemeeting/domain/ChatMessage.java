@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage { //뷰로 보내는 메세지
+public class ChatMessage extends BaseEntity { //뷰로 보내는 메세지
     public enum MessageType {
         ENTER, TALK, QUIT
     }

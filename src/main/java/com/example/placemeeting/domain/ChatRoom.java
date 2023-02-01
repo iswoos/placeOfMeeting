@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatRoom {
+public class ChatRoom extends BaseEntity {
 
     private String roomId; //룸 아이디
     private String roomName; //룸 이름
