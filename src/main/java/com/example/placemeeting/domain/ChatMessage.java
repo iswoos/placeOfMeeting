@@ -5,11 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
+
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatMessage extends BaseEntity { //뷰로 보내는 메세지
+
+    @Id
+    @Column(name = "chatmessage_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     public enum MessageType {
         ENTER, TALK, QUIT
     }

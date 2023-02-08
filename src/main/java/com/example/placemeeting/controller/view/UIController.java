@@ -25,4 +25,9 @@ public class UIController {
     public String adminLoginForm() {
         return "accounts/adminLoginForm";
     }
+
+    @GetMapping("/pom")
+    public String mainPage() {
+        return "main/home";
+    }
 }
