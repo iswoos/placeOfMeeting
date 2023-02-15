@@ -60,6 +60,8 @@ public class MemberService {
             throw new CustomCommonException(ErrorCode.NOT_EQUAL_PASSWORD);
         }
 
+        account.GeolocationSet(loginReqDto.getLatitude(), loginReqDto.getLongitude());
+
         TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserId());
 
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByuserId(loginReqDto.getUserId());
