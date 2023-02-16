@@ -82,6 +82,32 @@ public class MemberService {
 
         account.GeolocationSet(loginReqDto.getLatitude(), loginReqDto.getLongitude());
 
+        String lng = loginReqDto.getLongitude().toString();
+        String lat = loginReqDto.getLatitude().toString();
+
+        // NAVER Reverse Geocoding API 호출
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("X-NCP-APIGW-API-KEY-ID", clientId);
+        headers.set("X-NCP-APIGW-API-KEY", clientSecret);
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                NAVER_REVERSE_GEOCODING_API_URL, HttpMethod.GET, requestEntity, String.class, lng, lat);
+        // return responseEntity.getBody();
+        String responseBody = responseEntity.getBody();
+        // JSON 객체로 변환
+        JSONObject jsonObject = new JSONObject(responseBody);
+
+        // 필요한 데이터 추출
+        JSONObject area2 = jsonObject.getJSONArray("results")
+                .getJSONObject(0)
+                .getJSONObject("region")
+                .getJSONObject("area2");
+        String cityName = area2.getString("name");
+
+        account.localSet(cityName);
+
         TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserId());
 
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(loginReqDto.getUserId());
@@ -120,26 +146,7 @@ public class MemberService {
         String lng = member.getLongitude().toString();
         String lat = member.getLatitude().toString();
 
-        // NAVER Reverse Geocoding API 호출
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-NCP-APIGW-API-KEY-ID", clientId);
-        headers.set("X-NCP-APIGW-API-KEY", clientSecret);
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(
-                NAVER_REVERSE_GEOCODING_API_URL, HttpMethod.GET, requestEntity, String.class, lng, lat);
-        // return responseEntity.getBody();
-        String responseBody = responseEntity.getBody();
-        // JSON 객체로 변환
-        JSONObject jsonObject = new JSONObject(responseBody);
-
-        // 필요한 데이터 추출
-        JSONObject area2 = jsonObject.getJSONArray("results")
-                .getJSONObject(0)
-                .getJSONObject("region")
-                .getJSONObject("area2");
-        String cityName = area2.getString("name");
+        String cityName = member.getCityName();
 
         // OpenWeather API 호출
         RestTemplate restTemplate2 = new RestTemplate();

@@ -32,9 +32,15 @@ public class Member extends BaseEntity {
 
     private Double longitude;
 
+    private String cityName;
+
     public void GeolocationSet(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public void localSet(String cityName) {
+        this.cityName = cityName;
     }
 
     public Member(MemberRequest memberRequest) {
@@ -43,5 +49,4 @@ public class Member extends BaseEntity {
         this.userName = memberRequest.getUserName();
         this.phoneNumber = memberRequest.getPhoneNumber();
     }
-
 }
