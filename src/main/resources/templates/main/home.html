@@ -5,28 +5,24 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<button id="getLocationBtn">Get Location</button>
+<button id="getLocationBtn">걍 예시버튼</button>
 <div id="location"></div>
 
 <script>
 $(document).ready(function() {
-    $("#getLocationBtn").click(function() {
         let token = localStorage.getItem("Authorization");
-        console.log(token)
 
         $.ajax({
             url: "/members/location",
             type: "GET",
             headers: {'Content-Type': 'application/json', 'Authorization': token},
             success: function(response) {
-                $("#location").text(response);
-                console.log(response)
+                $("#location").text(response.cityName + ", " + response.weatherStatus + ", " + response.temperature+"℃");
             },
             error: function(xhr, status, error) {
                 console.log(error);
             }
         });
-    });
 });
 
 </script>

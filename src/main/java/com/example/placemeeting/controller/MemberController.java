@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class MemberController {
     }
 
     @GetMapping("/members/location")
-    public String getLocation(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Map<String, Object> getLocation(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return memberService.getLocation(userDetails.getAccount());
     }
 }
