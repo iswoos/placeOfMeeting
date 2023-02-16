@@ -31,4 +31,5 @@ public class RefreshToken extends BaseEntity {
         this.refreshToken = token;
         return this;
     }
+
 }

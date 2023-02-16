@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Location Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<button id="getLocationBtn">Get Location</button>
+<div id="location"></div>
+
+<script>
+$(document).ready(function() {
+    $("#getLocationBtn").click(function() {
+        let token = localStorage.getItem("Authorization");
+        console.log(token)
+
+        $.ajax({
+            url: "/members/location",
+            type: "GET",
+            headers: {'Content-Type': 'application/json', 'Authorization': token},
+            success: function(response) {
+                $("#location").text(response);
+                console.log(response)
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+});
+
+</script>
+</body>
+</html>
