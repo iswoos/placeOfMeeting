@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final MemberRepository accountRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        Member account = accountRepository.findByuserId(userName).orElseThrow(
+        Member account = memberRepository.findByUserId(userId).orElseThrow(
                 () -> new RuntimeException("Not Found Account")
         );
 
@@ -27,3 +27,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userDetails;
     }
 }
+

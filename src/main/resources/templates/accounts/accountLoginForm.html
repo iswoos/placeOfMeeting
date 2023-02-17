@@ -5,7 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
 
         a {
@@ -20,34 +21,48 @@
         .loginBtn {
             margin-top: 5px;
         }
+
     </style>
 
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        function accountLogin() {
-            var data = {
-                "userId": $("#userId").val(),
-                "password": $("#password").val()
-            }
 
-            $.ajax({
-                type: "POST",
-                url: "/members/login",
-                headers: {'Content-Type': 'application/json'},
-                data: JSON.stringify(data),
-                success: function (response, dd, xhr) {
-                    alert("로그인이 완료되었습니다.");
-                    let token = xhr.getResponseHeader("authorization");
-                    localStorage.setItem("Authorization", token)
-                    window.location.href = '/pom';
-                },
-                error : function(xhr, status, error) {
-                    let response = JSON.parse(xhr.responseText);
-                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
-                    alert(response.error.message);
+
+
+    function accountLogin() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var data = {
+                    "userId": $("#userId").val(),
+                    "password": $("#password").val(),
+                    "latitude": position.coords.latitude,
+                    "longitude": position.coords.longitude
                 }
+                $.ajax({
+                    type: "POST",
+                    url: "/members/login",
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(data),
+                    success: function (response, dd, xhr) {
+                        alert("로그인이 완료되었습니다.");
+                        let token = xhr.getResponseHeader("authorization");
+                        localStorage.setItem("Authorization", token)
+                        window.location.href = '/pom';
+                    },
+                    error : function(xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+                        alert(response.error.message);
+                    }
+                });
             });
+        } else {
+            alert("위치 정보에 동의해야만 서비스 이용이 가능합니다");
+            location.reload();
         }
+    }
+
+
 
     </script>
     <title>Document</title>
@@ -75,10 +90,16 @@
         <label for="password" class="form-label">패스워드</label>
         <input type="password" class="form-control" id="password">
     </div>
-    <button type="button" onclick="accountLogin()" class="loginBtn btn btn-primary form-control" style="height: 50px">사용자 로그인</button>
+    <button type="button" onclick="accountLogin()" class="loginBtn btn btn-primary form-control" style="height: 50px">
+        사용자 로그인
+    </button>
 
-    <button type="button" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control" style="height: 50px">관리자 로그인</button>
-    <button type="submit" onclick="location.href='/members/signup'" class="loginBtn btn btn-success form-control" style="height: 50px">회원가입</button>
+    <button type="button" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control"
+            style="height: 50px">관리자 로그인
+    </button>
+    <button type="submit" onclick="location.href='/members/signup'" class="loginBtn btn btn-success form-control"
+            style="height: 50px">회원가입
+    </button>
 
 </div>
 </body>

@@ -14,6 +14,10 @@ public class LoginRequest {
     @NotBlank
     private String password;
 
+    private Double latitude;
+
+    private Double longitude;
+
     public LoginRequest(String userId, String password) {
         this.userId = userId;
         this.password = password;

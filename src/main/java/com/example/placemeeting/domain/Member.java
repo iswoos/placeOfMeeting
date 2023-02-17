@@ -28,11 +28,25 @@ public class Member extends BaseEntity {
     @NotBlank
     private String phoneNumber;
 
+    private Double latitude;
+
+    private Double longitude;
+
+    private String cityName;
+
+    public void GeolocationSet(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public void localSet(String cityName) {
+        this.cityName = cityName;
+    }
+
     public Member(MemberRequest memberRequest) {
         this.userId = memberRequest.getUserId();
         this.password = memberRequest.getPassword();
         this.userName = memberRequest.getUserName();
         this.phoneNumber = memberRequest.getPhoneNumber();
     }
-
 }

@@ -15,7 +15,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public void setAccount(Member account) {
-            this.account = account;
+        this.account = account;
     }
 
     @Override
@@ -53,3 +53,4 @@ public class UserDetailsImpl implements UserDetails {
         return false;
     }
 }
+
