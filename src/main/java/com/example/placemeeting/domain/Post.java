@@ -1,6 +1,5 @@
 package com.example.placemeeting.domain;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +9,11 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Context extends BaseEntity {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "context_id")
+    @Column(name = "post_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,6 +36,6 @@ public class Context extends BaseEntity {
     private String cityName;
 
     @Enumerated(EnumType.STRING)
-    private ContextType contextType;
+    private PostType postType;
 
 }

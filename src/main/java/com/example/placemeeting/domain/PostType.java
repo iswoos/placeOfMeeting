@@ -1,6 +1,6 @@
 package com.example.placemeeting.domain;
 
-public enum ContextType {
+public enum PostType {
     TALK,
     LODGING,
     FOOD,

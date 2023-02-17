@@ -9,11 +9,11 @@
                     let token = localStorage.getItem("Authorization");
 
                     $.ajax({
-                        url: "/members/location",
+                        url: "/posts",
                         type: "GET",
                         headers: {'Content-Type': 'application/json', 'Authorization': token},
                         success: function(response) {
-                            $("#location").text(response.cityName + ", " + response.weatherStatus + ", " + response.temperature+"℃");
+                            $("#location").text(response);
                         },
                         error: function(xhr, status, error) {
                             console.log(error);
@@ -25,11 +25,7 @@
 </head>
 <body>
 <div id="location"></div>
+음식
 
-<button id="talk" onclick="location.href='/post/talk'">잡담</button>
-<button id="lodging" onclick="location.href='/post/lodging'">숙소</button>
-<button id="food" onclick="location.href='/post/food'">음식</button>
-<button id="hotplace" onclick="location.href='/post/hotplace'">핫플</button>
-<button id="traffic" onclick="location.href='/post/traffic'">교통</button>
 </body>
 </html>

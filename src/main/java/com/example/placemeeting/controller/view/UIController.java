@@ -30,4 +30,21 @@ public class UIController {
     public String mainPage() {
         return "main/home";
     }
+
+    @GetMapping("/post/talk")
+    public String talk() {
+        return "postboard/talk";
+    }
+
+    @GetMapping("/post/lodging")
+    public String lodging() {return "postboard/lodging";}
+
+    @GetMapping("/post/food")
+    public String food() {return "postboard/food";}
+
+    @GetMapping("/post/hotplace")
+    public String hotplace() {return "postboard/hotplace";}
+
+    @GetMapping("/post/traffic")
+    public String traffic() {return "postboard/traffic";}
 }

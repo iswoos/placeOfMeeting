@@ -1,6 +1,5 @@
 package com.example.placemeeting.domain;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +25,5 @@ public class Reply extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "context_id")
-    private Context context;
+    private Post context;
 }
