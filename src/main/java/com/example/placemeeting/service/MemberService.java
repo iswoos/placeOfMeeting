@@ -9,7 +9,7 @@ import com.example.placemeeting.dto.reqeustdto.LoginRequest;
 import com.example.placemeeting.dto.reqeustdto.MemberRequest;
 import com.example.placemeeting.exception.CustomCommonException;
 import com.example.placemeeting.exception.ErrorCode;
-import com.example.placemeeting.global.dto.MemberResDto;
+import com.example.placemeeting.dto.responsedto.MemberResDto;
 import com.example.placemeeting.jwt.dto.TokenDto;
 import com.example.placemeeting.jwt.util.JwtUtil;
 import com.example.placemeeting.repository.MemberRepository;

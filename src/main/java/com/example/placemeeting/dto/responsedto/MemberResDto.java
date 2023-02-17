@@ -1,4 +1,4 @@
-package com.example.placemeeting.global.dto;
+package com.example.placemeeting.dto.responsedto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

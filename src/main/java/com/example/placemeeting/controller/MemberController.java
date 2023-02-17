@@ -2,13 +2,12 @@ package com.example.placemeeting.controller;
 
 import com.example.placemeeting.dto.reqeustdto.LoginRequest;
 import com.example.placemeeting.dto.reqeustdto.MemberRequest;
-import com.example.placemeeting.global.dto.MemberResDto;
+import com.example.placemeeting.dto.responsedto.MemberResDto;
 import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.jwt.util.JwtUtil;
 import com.example.placemeeting.security.user.UserDetailsImpl;
 import com.example.placemeeting.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

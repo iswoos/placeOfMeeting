@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Context extends Serializers.Base {
+public class Context extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +21,22 @@ public class Context extends Serializers.Base {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String context;
+
+    @Column(nullable = false)
+    private int likeNum;
+
+    @Column(nullable = false)
+    private int commentNum;
+
+    @Column(nullable = false)
+    private String cityName;
+
+    @Enumerated(EnumType.STRING)
+    private ContextType contextType;
+
 }
