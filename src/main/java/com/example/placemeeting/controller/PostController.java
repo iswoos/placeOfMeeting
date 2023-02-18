@@ -2,6 +2,7 @@ package com.example.placemeeting.controller;
 
 import com.example.placemeeting.dto.reqeustdto.MemberRequest;
 import com.example.placemeeting.dto.responsedto.MemberResDto;
+import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class PostController {
 
 
     @GetMapping("/posts")
+    public List<ResponseDto> allPosts()
 
     }
 
