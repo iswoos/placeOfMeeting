@@ -22,7 +22,7 @@ public class PostController {
 
 
     @GetMapping("/posts")
-    public List<ResponseDto> allPosts()
+    public ResponseDto<List> allPosts()
 
     }
 
