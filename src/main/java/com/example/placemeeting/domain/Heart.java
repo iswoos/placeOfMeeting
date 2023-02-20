@@ -21,6 +21,11 @@ public class Heart extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "context_id")
-    private Post context;
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+    public Heart(Post post, Member member) {
+        this.member = member;
+        this.post = post;
+    }
 }

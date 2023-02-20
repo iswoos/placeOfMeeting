@@ -4,10 +4,7 @@
     <title>Get Location Example</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-</head>
-<body>
-<input type="hidden" id="postId" th:value="${postId}">
-<script>
+    <script>
     $(document).ready(function () {
         let token = localStorage.getItem("Authorization");
         let postId = $("#postId").val();
@@ -34,6 +31,12 @@
         });
     });
 </script>
+</head>
+
+
+<body>
+<input type="hidden" id="postId" th:value="${postId}">
+
 
 <div id="location"></div>
 게시글 단건조회

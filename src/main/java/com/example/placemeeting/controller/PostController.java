@@ -39,4 +39,10 @@ public class PostController {
     public ResponseDto<PostDetailResDto> getPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(postService.getPost(postId, userDetails.getAccount()));
     }
+
+    // 게시글 좋아요
+    @PostMapping("/posts/like/{postId}")
+    public ResponseDto<String> likePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(postService.likePost(postId, userDetails.getAccount()));
+    }
 }

@@ -5,13 +5,69 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+            $(document).ready(function() {
+                    let token = localStorage.getItem("Authorization");
+
+                    $.ajax({
+                        url: "/posts",
+                        type: "GET",
+                        headers: {'Content-Type': 'application/json', 'Authorization': token},
+                        data : {postType : "LODGING"},
+                        success: function(response) {
+
+                            for( let i = 0; i< response.data.length; i++) {
+                                let post = response.data[i];
+
+                                let postId = post.postId;
+                                let title = post.title;
+                                let userName = post.userName;
+                                let likeNum = post.likeNum;
+                                let commentNum = post.commentNum;
+                                let cityName = post.cityName;
+                                let createdAt = post.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16) ;
+
+                            let tmpPosts =
+
+                                `<tr>
+                                    <td><a href="/posts/view/${postId}">${i+1}</a></td>
+                                    <td><a href="/posts/view/${postId}">${title}</a></td>
+                                    <td>${userName}</td>
+                                    <td>${likeNum}</td>
+                                    <td>${commentNum}</td>
+                                    <td>${createdAt}</td>
+                                </tr>`
+
+
+                            $("#posts").append(tmpPosts);
+                            $("#category").text(cityName + "게시판");
+                        }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
+            });
 
 
     </script>
 </head>
 <body>
-<div id="location"></div>
-숙소
+<h1 id = "category">게시판</h1>
+<table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>좋아요</th>
+        <th>댓글</th>
+        <th>작성일자</th>
+    </tr>
+    </thead>
+    <tbody id = "posts">
 
+    </tbody>
+</table>
+<button type="button" onclick="location.href='/posts/create/LODGING'">글 작성</button>
 </body>
 </html>

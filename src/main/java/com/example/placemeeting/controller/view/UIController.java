@@ -39,20 +39,34 @@ public class UIController {
     }
 
     @GetMapping("/post/lodging")
-    public String lodging() {return "postboard/lodging";}
+    public String lodging() {
+        return "postboard/lodging";
+    }
 
     @GetMapping("/post/food")
-    public String food() {return "postboard/food";}
+    public String food() {
+        return "postboard/food";
+    }
 
     @GetMapping("/post/hotplace")
-    public String hotplace() {return "postboard/hotplace";}
+    public String hotplace() {
+        return "postboard/hotplace";
+    }
 
     @GetMapping("/post/traffic")
-    public String traffic() {return "postboard/traffic";}
+    public String traffic() {
+        return "postboard/traffic";
+    }
 
     @GetMapping("/posts/view/{postId}")
     public String detailPostPage(@PathVariable Long postId, Model model) {
         model.addAttribute("postId", postId);
         return "postboard/detailPost";
+    }
+
+    @GetMapping("/posts/create/{postType}")
+    public String createPost(@PathVariable String postType, Model model) {
+        model.addAttribute("postType", postType);
+        return "postboard/createPost";
     }
 }

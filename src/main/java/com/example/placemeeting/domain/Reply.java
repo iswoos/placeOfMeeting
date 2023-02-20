@@ -24,6 +24,6 @@ public class Reply extends BaseEntity{
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "context_id")
-    private Post context;
+    @JoinColumn(name = "post_id")
+    private Post post;
 }
