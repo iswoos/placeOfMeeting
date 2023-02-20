@@ -1,5 +1,7 @@
 package com.example.placemeeting.domain;
 
+import com.example.placemeeting.dto.reqeustdto.PostRequest;
+import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +39,13 @@ public class Post extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private PostType postType;
+
+    public Post(Member member, PostCreate postCreate) {
+        this.member = member;
+        this.title = postCreate.getTitle();
+        this.context = postCreate.getContext();
+        this.cityName = member.getCityName();
+        this.postType = PostType.valueOf(postCreate.getPostType());
+    }
 
 }
