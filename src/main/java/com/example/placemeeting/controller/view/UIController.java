@@ -2,7 +2,9 @@ package com.example.placemeeting.controller.view;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,4 +49,10 @@ public class UIController {
 
     @GetMapping("/post/traffic")
     public String traffic() {return "postboard/traffic";}
+
+    @GetMapping("/posts/view/{postId}")
+    public String detailPostPage(@PathVariable Long postId, Model model) {
+        model.addAttribute("postId", postId);
+        return "postboard/detailPost";
+    }
 }

@@ -6,6 +6,7 @@ import com.example.placemeeting.domain.PostType;
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
 import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
 import com.example.placemeeting.dto.responsedto.PostResponse;
+import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostMainResDto;
 import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.repository.PostRepository;
@@ -45,5 +46,9 @@ public class PostService {
         postRepository.save(new Post(member,postCreate));
 
         return "게시물 등록완료";
+    }
+
+    public PostDetailResDto getPost(Long postId, Member member) {
+        return new PostDetailResDto(postRepository.detailPost(postId), member);
     }
 }
