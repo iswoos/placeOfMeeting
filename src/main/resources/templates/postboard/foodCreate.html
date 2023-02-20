@@ -10,9 +10,13 @@
 
                     $.ajax({
                         url: "/posts",
-                        type: "GET",
+                        type: "POST",
                         headers: {'Content-Type': 'application/json', 'Authorization': token},
-                        data : {postType : "food"},
+
+                        <!-- ajax요청 데이터를 JSON 형태로 보내고 있기에 아래 코드의 데이터를 수신 못함!
+                        data : {postType : "food"},-->
+
+                        data : JSON.stringify({postType : "FOOD"}),
                         success: function(response) {
                             $("#location").text(response);
                         },
