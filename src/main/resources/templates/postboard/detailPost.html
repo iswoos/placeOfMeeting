@@ -16,20 +16,50 @@
             success: function(response) {
                 let post = response.data;
 
-                let title = post.title;
                 let userName = post.userName;
+                let title = post.title;
+                let context = post.context;
                 let likeNum = post.likeNum;
                 let commentNum = post.commentNum;
                 let cityName = post.cityName;
                 let createdAt = post.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16) ;
 
-                $('#location').append(title, userName, likeNum, commentNum, cityName, createdAt);
+                $('#cityName').append(cityName + ' ' + "게시판");
+                $('#title').append(title);
+                $('#context').append(context);
+                $('#likeNum').append(likeNum);
+                $('#commentNum').append(commentNum);
+                $('#userNamecreatedAt').append(userName + " | " + createdAt);
+
+
             },
             error: function(xhr, status, error) {
                 console.log(error);
             }
         });
     });
+
+
+    function likePost() {
+        let token = localStorage.getItem("Authorization");
+        let postId = $("#postId").val();
+
+         $.ajax({
+            url: "/posts/like/" + postId,
+            type: "POST",
+            headers: {'Content-Type': 'application/json', 'Authorization': token},
+            success: function(response) {
+                alert(response.data);
+                window.location.reload();
+
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+
 </script>
 </head>
 
@@ -37,9 +67,20 @@
 <body>
 <input type="hidden" id="postId" th:value="${postId}">
 
+<p id="cityName"></p>
+<hr />
+<p id="title"></p>
+<p id="userNamecreatedAt"></p>
+<p id = "context"></p>
+<p id = "commentNum"></p>
 
-<div id="location"></div>
-게시글 단건조회
+<button id = "likeNum" type="button" onclick="likePost()"></button>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
 
 </body>
 </html>

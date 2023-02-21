@@ -1,7 +1,6 @@
 package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.*;
-import com.example.placemeeting.dto.reqeustdto.PostRequest;
 import com.example.placemeeting.dto.reqeustdto.PostRequest.CommentCreate;
 import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
@@ -32,6 +31,9 @@ public class PostService {
     public List<PostMainResDto> getPosts(String postType, Member member) {
 
         List<Post> postList = postRepository.findByPostTypeAndCityName(PostType.valueOf(postType), member.getCityName());
+
+        // 생성일자 기준 최신순으로 정렬
+        postList.sort((p1,p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()));
 
         return postList.stream().map(PostMainResDto::new).collect(Collectors.toList());
 
