@@ -25,5 +25,16 @@ public class PostRequest {
         private String postType;
 
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CommentCreate {
+
+        @NotBlank
+        private String context;
+
+    }
+
 }
 

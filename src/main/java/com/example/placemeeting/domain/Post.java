@@ -48,4 +48,15 @@ public class Post extends BaseEntity {
         this.postType = PostType.valueOf(postCreate.getPostType());
     }
 
+    public void plusLike() {
+        this.likeNum += 1;
+    }
+
+    public void minusLike() {
+        this.likeNum -= 1;
+    }
+
+    public void plusComment() {
+        this.commentNum += 1;
+    }
 }

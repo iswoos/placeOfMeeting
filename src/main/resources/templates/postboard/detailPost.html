@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Get Location Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        let token = localStorage.getItem("Authorization");
+        let postId = $("#postId").val();
+
+        $.ajax({
+            url: "/posts/" + postId,
+            type: "GET",
+            headers: {'Content-Type': 'application/json', 'Authorization': token},
+            success: function(response) {
+                let post = response.data;
+
+                let title = post.title;
+                let userName = post.userName;
+                let likeNum = post.likeNum;
+                let commentNum = post.commentNum;
+                let cityName = post.cityName;
+                let createdAt = post.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16) ;
+
+                $('#location').append(title, userName, likeNum, commentNum, cityName, createdAt);
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+</head>
+
+
+<body>
+<input type="hidden" id="postId" th:value="${postId}">
+
+
+<div id="location"></div>
+게시글 단건조회
+
+</body>
+</html>

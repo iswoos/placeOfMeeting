@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Get Location Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+
+        a {
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+
+        .loginBtn {
+            margin-top: 5px;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    function createPost() {
+        let token = localStorage.getItem("Authorization");
+
+        console.log("aa");
+
+        var data = {
+            "title": $("#title").val(),
+            "context": $("#context").val(),
+            "postType" : $("#postType").val()
+        }
+
+         $.ajax({
+            url: "/posts",
+            type: "POST",
+            headers: {'Content-Type': 'application/json', 'Authorization': token},
+            data: JSON.stringify(data),
+            success: function(response) {
+                alert("게시글 등록완료");
+                window.history.back();
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+    </script>
+</head>
+
+
+<body>
+<input type="hidden" id="postType" th:value="${postType}">
+
+<div class="container">
+    <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input class="form-control" id="title" placeholder="제목">
+    </div>
+    <div class="mb-3">
+        <label for="context" class="form-label">내용</label>
+        <input class="form-control" id="context">
+    </div>
+    <button type="button" onclick="createPost()" class="loginBtn btn btn-primary form-control" style="height: 50px">
+        등록
+    </button>
+</div>
+</body>
+</html>
