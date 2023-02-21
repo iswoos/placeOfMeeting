@@ -1,6 +1,7 @@
 package com.example.placemeeting.controller;
 
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
+import com.example.placemeeting.dto.reqeustdto.PostRequest.CommentCreate;
 import com.example.placemeeting.dto.responsedto.PostResponse;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostMainResDto;
@@ -40,9 +41,15 @@ public class PostController {
         return ResponseDto.success(postService.getPost(postId, userDetails.getAccount()));
     }
 
-    // 게시글 좋아요
+    // 게시물 좋아요
     @PostMapping("/posts/like/{postId}")
     public ResponseDto<String> likePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(postService.likePost(postId, userDetails.getAccount()));
+    }
+
+    // 게시물 댓글달기
+    @PostMapping("/posts/{postId}/comments")
+    public ResponseDto<String> createComment(@PathVariable Long postId, @RequestBody CommentCreate commentCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(postService.createComment(postId, commentCreate, userDetails.getAccount()));
     }
 }
