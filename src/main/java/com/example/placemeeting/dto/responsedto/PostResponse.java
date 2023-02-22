@@ -50,6 +50,8 @@ public class PostResponse {
 
         private String title;
 
+        private String context;
+
         private int likeNum;
 
         private int commentNum;
@@ -61,6 +63,7 @@ public class PostResponse {
         public PostDetailResDto(Post post, Member member) {
             this.userName = member.getUserName();
             this.title = post.getTitle();
+            this.context = post.getContext();
             this.likeNum = post.getLikeNum();
             this.commentNum = post.getCommentNum();
             this.cityName = post.getCityName();
