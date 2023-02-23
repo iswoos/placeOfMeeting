@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -125,6 +124,7 @@ public class MemberService {
 
     }
 
+    @Transactional
     public String issueToken(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
         if(!jwtUtil.refreshTokenValidation(refreshToken)){
@@ -141,6 +141,7 @@ public class MemberService {
     }
 
 
+    @Transactional
     public Map<String, Object> getLocation(Member member) throws JSONException{
 
         String lng = member.getLongitude().toString();
