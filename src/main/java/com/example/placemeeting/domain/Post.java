@@ -5,12 +5,14 @@ import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate // Dirty checking으로 인한 변경이 발생할 때, 변경 필드만 업데이트 반영되도록 해주는 어노테이션
 public class Post extends BaseEntity {
 
     @Id

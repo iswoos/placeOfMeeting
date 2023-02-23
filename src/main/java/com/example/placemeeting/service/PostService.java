@@ -12,8 +12,8 @@ import com.example.placemeeting.repository.HeartRepository;
 import com.example.placemeeting.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +28,7 @@ public class PostService {
     private final CommentRepository commentRepository;
 
 
+    @Transactional(readOnly = true)
     public List<PostMainResDto> getPosts(String postType, Member member) {
 
         List<Post> postList = postRepository.findByPostTypeAndCityName(PostType.valueOf(postType), member.getCityName());
@@ -54,10 +55,12 @@ public class PostService {
         return "게시물 등록완료";
     }
 
+    @Transactional(readOnly = true)
     public PostDetailResDto getPost(Long postId, Member member) {
         return new PostDetailResDto(postRepository.detailPost(postId), member);
     }
 
+    @Transactional
     public String likePost(Long postId, Member member) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)
@@ -76,6 +79,7 @@ public class PostService {
         }
     }
 
+    @Transactional
     public String createComment(Long postId, CommentCreate commentCreate, Member member) {
 
         Post post = postRepository.findById(postId).orElseThrow(
