@@ -1,12 +1,9 @@
 package com.example.placemeeting.dto.reqeustdto;
 
-import com.example.placemeeting.domain.Member;
-import com.example.placemeeting.domain.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 public class PostRequest {
@@ -16,10 +13,10 @@ public class PostRequest {
     @Getter
     public static class PostCreate {
 
-        @NotBlank
+        @NotBlank(message = "제목을 입력해주세요")
         private String title;
 
-        @NotBlank
+        @NotBlank(message = "글을 입력해주세요")
         private String context;
 
         private String postType;
@@ -29,12 +26,13 @@ public class PostRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CommentCreate {
+    public static class PostModify {
 
-        @NotBlank
+        @NotBlank(message = "제목을 입력해주세요")
+        private String title;
+
+        @NotBlank(message = "글을 입력해주세요")
         private String context;
-
     }
-
 }
 

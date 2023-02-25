@@ -1,5 +1,6 @@
 package com.example.placemeeting.dto.responsedto;
 
+import com.example.placemeeting.domain.Comment;
 import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.domain.Post;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostResponse {
 
@@ -60,14 +62,17 @@ public class PostResponse {
 
         private LocalDateTime createdAt;
 
-        public PostDetailResDto(Post post, Member member) {
-            this.userName = member.getUserName();
+        private List<Comment> comments;
+
+        public PostDetailResDto(Post post, List<Comment> comments) {
+            this.userName = post.getMember().getUserName();
             this.title = post.getTitle();
             this.context = post.getContext();
             this.likeNum = post.getLikeNum();
             this.commentNum = post.getCommentNum();
             this.cityName = post.getCityName();
             this.createdAt = post.getCreatedAt();
+            this.comments = comments;
         }
     }
 
