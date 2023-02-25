@@ -19,6 +19,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
+    @Transactional
     public String createComment(Long postId, PostRequest.CommentCreate commentCreate, Member member) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)

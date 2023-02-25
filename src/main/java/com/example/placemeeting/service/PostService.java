@@ -92,6 +92,7 @@ public class PostService {
         }
     }
 
+    @Transactional
     public String modifyPost(Long postId, PostRequest.PostModify postModify, Member member) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)
@@ -106,6 +107,7 @@ public class PostService {
         return "게시물 수정완료";
     }
 
+    @Transactional
     public String deletePost(Long postId, Member member) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)
