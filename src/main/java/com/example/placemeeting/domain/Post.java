@@ -61,4 +61,9 @@ public class Post extends BaseEntity {
     public void plusComment() {
         this.commentNum += 1;
     }
+
+    public void modifyPost(PostRequest.PostModify postModify) {
+        this.title = postModify.getTitle();
+        this.context = postModify.getContext();
+    }
 }

@@ -16,15 +16,28 @@ public class PostRequest {
     @Getter
     public static class PostCreate {
 
-        @NotBlank
+        @NotBlank(message = "제목을 입력해주세요")
         private String title;
 
-        @NotBlank
+        @NotBlank(message = "글을 입력해주세요")
         private String context;
 
         private String postType;
 
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class PostModify {
+
+        @NotBlank(message = "제목을 입력해주세요")
+        private String title;
+
+        @NotBlank(message = "글을 입력해주세요")
+        private String context;
+    }
+
 
     @AllArgsConstructor
     @NoArgsConstructor

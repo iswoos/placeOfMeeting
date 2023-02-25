@@ -1,6 +1,7 @@
 package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.*;
+import com.example.placemeeting.dto.reqeustdto.PostRequest;
 import com.example.placemeeting.dto.reqeustdto.PostRequest.CommentCreate;
 import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
@@ -62,8 +63,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDetailResDto getPost(Long postId, Member member) {
-        return new PostDetailResDto(postRepository.detailPost(postId), member);
+    public PostDetailResDto getPost(Long postId) {
+        List<Comment> commentList = commentRepository.findbyPostId(postId);
+        // 게시물 아이디로 가져온 댓글 리스트. stream이용하여 생성일자 기준으로 정렬 후 List반환 
+        List<Comment> comments = commentList.stream()
+                .sorted(Comparator.comparing(Comment::getCreatedAt))
+                .collect(Collectors.toList());
+
+        return new PostDetailResDto(postRepository.detailPost(postId),comments);
     }
 
     @Transactional
@@ -98,5 +105,33 @@ public class PostService {
         commentRepository.save(new Comment(post, member, commentCreate.getContext()));
 
         return "댓글 등록완료";
+    }
+
+    public String modifyPost(Long postId, PostRequest.PostModify postModify, Member member) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)
+        );
+
+        if (!member.equals(post.getMember())) {
+            throw new CustomCommonException(ErrorCode.UNAUTHORIZED_USER);
+        }
+
+        post.modifyPost(postModify);
+
+        return "게시물 수정완료";
+    }
+
+    public String deletePost(Long postId, Member member) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)
+        );
+
+        if (!member.equals(post.getMember())) {
+            throw new CustomCommonException(ErrorCode.UNAUTHORIZED_USER);
+        }
+
+        postRepository.delete(post);
+
+        return "게시물 삭제완료";
     }
 }
