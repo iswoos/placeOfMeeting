@@ -2,7 +2,6 @@ package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.*;
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
-import com.example.placemeeting.dto.reqeustdto.PostRequest.CommentCreate;
 import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostMainResDto;
@@ -64,7 +63,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostDetailResDto getPost(Long postId) {
-        List<Comment> commentList = commentRepository.findbyPostId(postId);
+        List<Comment> commentList = commentRepository.findByPostId(postId);
         // 게시물 아이디로 가져온 댓글 리스트. stream이용하여 생성일자 기준으로 정렬 후 List반환
         List<Comment> comments = commentList.stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt))

@@ -1,16 +1,12 @@
 package com.example.placemeeting.controller;
 
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
-import com.example.placemeeting.dto.reqeustdto.PostRequest.CommentCreate;
-import com.example.placemeeting.dto.responsedto.PostResponse;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostMainResDto;
 import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.security.user.UserDetailsImpl;
 import com.example.placemeeting.service.PostService;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

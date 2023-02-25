@@ -1,6 +1,6 @@
 package com.example.placemeeting.controller;
 
-import com.example.placemeeting.dto.reqeustdto.PostRequest;
+import com.example.placemeeting.dto.reqeustdto.CommentRequest;
 import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.security.user.UserDetailsImpl;
 import com.example.placemeeting.service.CommentService;
@@ -19,7 +19,7 @@ public class CommentController {
 
     // 게시물 댓글달기
     @PostMapping("/posts/{postId}/comments")
-    public ResponseDto<String> createComment(@PathVariable Long postId, @RequestBody PostRequest.CommentCreate commentCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseDto<String> createComment(@PathVariable Long postId, @RequestBody CommentRequest.CommentCreate commentCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(commentService.createComment(postId, commentCreate, userDetails.getAccount()));
     }
 

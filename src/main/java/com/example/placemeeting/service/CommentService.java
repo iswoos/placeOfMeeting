@@ -4,6 +4,7 @@ package com.example.placemeeting.service;
 import com.example.placemeeting.domain.Comment;
 import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.domain.Post;
+import com.example.placemeeting.dto.reqeustdto.CommentRequest;
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
 import com.example.placemeeting.exception.CustomCommonException;
 import com.example.placemeeting.exception.ErrorCode;
@@ -20,7 +21,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public String createComment(Long postId, PostRequest.CommentCreate commentCreate, Member member) {
+    public String createComment(Long postId, CommentRequest.CommentCreate commentCreate, Member member) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)
         );
