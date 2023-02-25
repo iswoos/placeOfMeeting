@@ -65,7 +65,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostDetailResDto getPost(Long postId) {
         List<Comment> commentList = commentRepository.findbyPostId(postId);
-        // 게시물 아이디로 가져온 댓글 리스트. stream이용하여 생성일자 기준으로 정렬 후 List반환 
+        // 게시물 아이디로 가져온 댓글 리스트. stream이용하여 생성일자 기준으로 정렬 후 List반환
         List<Comment> comments = commentList.stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt))
                 .collect(Collectors.toList());
@@ -90,21 +90,6 @@ public class PostService {
             heartRepository.delete(heart);
             return "좋아요 취소!";
         }
-    }
-
-    @Transactional
-    public String createComment(Long postId, CommentCreate commentCreate, Member member) {
-
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.POST_NOT_FOUND)
-        );
-
-
-        post.plusComment();
-
-        commentRepository.save(new Comment(post, member, commentCreate.getContext()));
-
-        return "댓글 등록완료";
     }
 
     public String modifyPost(Long postId, PostRequest.PostModify postModify, Member member) {

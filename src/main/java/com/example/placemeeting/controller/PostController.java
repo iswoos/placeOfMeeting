@@ -48,12 +48,6 @@ public class PostController {
         return ResponseDto.success(postService.likePost(postId, userDetails.getAccount()));
     }
 
-    // 게시물 댓글달기
-    @PostMapping("/posts/{postId}/comments")
-    public ResponseDto<String> createComment(@PathVariable Long postId, @RequestBody CommentCreate commentCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(postService.createComment(postId, commentCreate, userDetails.getAccount()));
-    }
-
     // 게시물 수정하기
     @PatchMapping("/posts/{postId}")
     public ResponseDto<String> modifyPost(@PathVariable Long postId, @Valid @RequestBody PostRequest.PostModify postModify, @AuthenticationPrincipal UserDetailsImpl userDetails) {
