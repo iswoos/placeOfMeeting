@@ -8,6 +8,7 @@
     $(document).ready(function () {
         let token = localStorage.getItem("Authorization");
         let postId = $("#postId").val();
+        console.log(postId);
 
         $.ajax({
             url: "/posts/" + postId,
@@ -15,6 +16,8 @@
             headers: {'Content-Type': 'application/json', 'Authorization': token},
             success: function(response) {
                 let post = response.data;
+
+                console.log(post);
 
                 let userName = post.userName;
                 let title = post.title;
@@ -24,14 +27,34 @@
                 let cityName = post.cityName;
                 let createdAt = post.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16) ;
 
+                console.log(cityName);
+
+                let comments = post.comments;
+
+                console.log(comments);
+
+
                 $('#cityName').append(cityName + ' ' + "게시판");
                 $('#title').append(title);
                 $('#context').append(context);
                 $('#likeNum').append(likeNum);
-                $('#commentNum').append(commentNum);
+                $('#commentNum').append("댓글 수:" + ' ' +commentNum);
                 $('#userNamecreatedAt').append(userName + " | " + createdAt);
 
+                for(let i=0; i<comments.length; i++){
+                    let comment = comments[i];
 
+                    let userName = comment.userName;
+                    let context = comment.context;
+                    let createdAt = comment.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16);
+
+
+                    let tmpComments = `<p>
+                                            ${userName} | ${context} | ${createdAt}
+                                        </p>`
+
+                    $('#comments').append(tmpComments);
+                }
             },
             error: function(xhr, status, error) {
                 console.log(error);
@@ -60,6 +83,30 @@
     }
 
 
+    function Comment() {
+        let token = localStorage.getItem("Authorization");
+        let postId = $("#postId").val();
+
+        var data = {
+                    "context": $("#comment").val()
+                }
+
+         $.ajax({
+            url: "/posts/" + postId +"/comments",
+            type: "POST",
+            headers: {'Content-Type': 'application/json', 'Authorization': token},
+            data: JSON.stringify(data),
+            success: function(response) {
+                alert(response.data);
+                window.location.reload();
+
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
 </script>
 </head>
 
@@ -79,7 +126,20 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
+<div class="container">
+    <div class="mb-3">
+        <label for="context" class="form-label">내용</label>
+        <input class="form-control" id="comment">
+        <button type="button" onclick="Comment()" class="loginBtn btn btn-primary form-control" style="height: 50px">
+            댓글등록
+        </button>
+    </div>
+</div>
 
+<p id="comments">
+
+
+</p>
 
 
 </body>

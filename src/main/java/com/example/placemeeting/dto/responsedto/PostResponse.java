@@ -3,6 +3,8 @@ package com.example.placemeeting.dto.responsedto;
 import com.example.placemeeting.domain.Comment;
 import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.domain.Post;
+import com.example.placemeeting.dto.reqeustdto.CommentRequest;
+import com.example.placemeeting.dto.reqeustdto.CommentRequest.getComment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,9 +64,9 @@ public class PostResponse {
 
         private LocalDateTime createdAt;
 
-        private List<Comment> comments;
+        private List<getComment> comments;
 
-        public PostDetailResDto(Post post, List<Comment> comments) {
+        public PostDetailResDto(Post post, List<getComment> comments) {
             this.userName = post.getMember().getUserName();
             this.title = post.getTitle();
             this.context = post.getContext();
