@@ -15,7 +15,9 @@ public class MessageController { //채팅이 처리되는곳!
 
     private final SimpMessageSendingOperations sendingOperations; // @EnableWebSocketMessageBroker를 통해서 등록되는 Bean이다. Broker로 메시지를 전달한다.
 
-    @MessageMapping("/chat/message") //클라이언트가 Send 할수 있는 경로
+    //클라이언트가 Send 할수 있는 경로
+    // /pub/socketMessage를 받으면
+    @MessageMapping("/chat/message")
     public void enter(ChatMessage message) {
         System.out.println("채팅 시작!");
         LocalTime now = LocalTime.now();

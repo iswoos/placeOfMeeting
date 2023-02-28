@@ -1,6 +1,7 @@
 package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.ChatRoom;
+import com.example.placemeeting.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import java.util.*;
 public class ChatService {
 
     private Map<String, ChatRoom> chatRooms;
+
+    private final ChatRoomRepository chatRoomRepository;
 
     @PostConstruct
     //의존관게 주입완료되면 실행되는 코드
@@ -38,6 +41,7 @@ public class ChatService {
     //채팅방 생성
     public ChatRoom createRoom(String name) {
         ChatRoom chatRoom = ChatRoom.create(name);
+        chatRoomRepository.save(chatRoom);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }
