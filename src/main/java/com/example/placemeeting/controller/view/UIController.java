@@ -69,4 +69,11 @@ public class UIController {
         model.addAttribute("postType", postType);
         return "postboard/createPost";
     }
+
+    // 채팅방 입장 화면
+    @GetMapping("chat/room/enter/{roomId}") //채팅방 입장
+    public String roomDetail(@PathVariable Long roomId, Model model) {
+        model.addAttribute("roomId", roomId);
+        return "chat/roomdetail";
+    }
 }

@@ -2,6 +2,8 @@ package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.ChatRoom;
 import com.example.placemeeting.domain.Member;
+import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest;
+import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest.ChatRoomCreate;
 import com.example.placemeeting.dto.responsedto.ChatRoomResponse;
 import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
 import com.example.placemeeting.repository.ChatRoomRepository;
@@ -44,8 +46,8 @@ public class ChatService {
     }
 
     //채팅방 생성
-    public ChatRoom createRoom(String chatType, Member member) {
-        ChatRoom chatRoom = new ChatRoom(chatType, member);
+    public ChatRoom createRoom(ChatRoomCreate chatRoomCreate, Member member) {
+        ChatRoom chatRoom = new ChatRoom(chatRoomCreate.getChatType(), member);
         chatRoomRepository.save(chatRoom);
         return chatRoom;
     }

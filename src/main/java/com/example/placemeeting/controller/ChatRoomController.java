@@ -2,6 +2,8 @@ package com.example.placemeeting.controller;
 
 
 import com.example.placemeeting.domain.ChatRoom;
+import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest;
+import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest.ChatRoomCreate;
 import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
 import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.security.user.UserDetailsImpl;
@@ -28,16 +30,8 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("/room") //채팅방 생성
     @ResponseBody
-    public ResponseDto<ChatRoom> createRoom(@RequestParam("chatType") String chatType, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(chatService.createRoom(chatType, userDetails.getAccount()));
-    }
-
-    // 채팅방 입장 화면
-    @GetMapping("/room/enter/{roomId}") //채팅방 입장
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
-        System.out.println("방입장");
-        return "/chat/roomdetail";
+    public ResponseDto<ChatRoom> createRoom(@RequestBody ChatRoomCreate chatRoomCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(chatService.createRoom(chatRoomCreate, userDetails.getAccount()));
     }
 
     // 특정 채팅방 조회
