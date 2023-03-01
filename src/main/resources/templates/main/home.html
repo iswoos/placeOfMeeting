@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
 <head>
     <title>Get Location Example</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
+</head>
+<body>
+<script>
             $(document).ready(function() {
                     let token = localStorage.getItem("Authorization");
 
@@ -19,29 +20,131 @@
                             console.log(error);
                         }
                     });
+
+                    $.ajax({
+                        url: "/chat/rooms",
+                        type: "GET",
+                        headers: {'Content-Type': 'application/json', 'Authorization': token},
+                        success: function(response) {
+                            if(response.data){
+                                let Rooms = response.data;
+                                let talkId;
+                                let lodgingId
+                                let foodId;
+                                let hotplaceId;
+                                let trafficId;
+
+                                for(let i=0; i<Rooms.length; i++){
+                                switch(Rooms[i].postAndChatType){
+                                    case 'TALK':
+                                        talkId = Rooms[i].id;
+                                        break;
+                                    case 'LODGING':
+                                        lodgingId = Rooms[i].id;
+                                        break;
+                                    case 'FOOD':
+                                        foodId = Rooms[i].id;
+                                        break;
+                                    case 'HOTPLACE':
+                                        hotplaceId = Rooms[i].id;
+                                        break;
+                                    case 'TRAFFIC':
+                                        trafficId = Rooms[i].id;
+                                        break;
+                                    }
+                                }
+
+                                $('#chat-buttons').html(`
+                                    <button id="talkchat" chatRoomId=${talkId} onclick="enterChat(event)">잡담</button>
+                                    <button id="lodgingchat" chatRoomId=${lodgingId} onclick="enterChat(event)">숙소</button>
+                                    <button id="foodchat" chatRoomId=${foodId} onclick="enterChat(event)">음식</button>
+                                    <button id="hotplacechat" chatRoomId=${hotplaceId} onclick="enterChat(event)">핫플</button>
+                                    <button id="trafficchat" chatRoomId=${trafficId} onclick="enterChat(event)">교통</button>
+                                  `);
+                                  }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
             });
 
+
+
+
+
+                    function enterChat(event) {
+                        // enterChat()메서드 실행 후, chatRoomId값이 비었을 경우 아래 코드실행 (룸 생성 + 룸 진입)
+                        const buttonId = event.target.id;
+                        const chatRoomId = event.target.getAttribute('chatRoomId');
+
+                        // chatRoomId가 undefined인 경우, 새로운 채팅방을 만듭니다.
+                        if (chatRoomId === "undefined") {
+                            let chatType;
+                            let token = localStorage.getItem("Authorization");
+
+                    switch(buttonId){
+                        case 'talkchat':
+                            chatType = "TALK";
+                            break;
+                        case 'lodgingchat':
+                            chatType = "LODGING";
+                            break;
+                        case 'foodchat':
+                            chatType = "FOOD";
+                            break;
+                        case 'hotplacechat':
+                            chatType = "HOTPLACE";
+                            break;
+                        case 'trafficchat':
+                            chatType = "TRAFFIC";
+                            break;
+                    }
+
+                    var data = {
+                                "chatType": chatType
+                            }
+
+                    console.log(data);
+
+                    $.ajax({
+                        url: "/chat/room",
+                        type: "POST",
+                        headers: {'Content-Type': 'application/json', 'Authorization': token},
+                        data: JSON.stringify(data),
+                        success: function(response) {
+                            localStorage.setItem('wschat.roomId',response.data.id);
+                            window.location.href="/chat/room/enter/"+response.data.id;
+
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
+                } else{
+                    console.log(chatRoomId);
+                    window.location.href="/chat/room/enter/"+chatRoomId;
+            }
+}
+
     </script>
-</head>
-<body>
 <div id="location"></div>
 
 
-
-
-<!--게시판 영역-->
-<button id="talk" onclick="location.href='/post/talk'">잡담</button>
-<button id="lodging" onclick="location.href='/post/lodging'">숙소</button>
-<button id="food" onclick="location.href='/post/food'">음식</button>
-<button id="hotplace" onclick="location.href='/post/hotplace'">핫플</button>
-<button id="traffic" onclick="location.href='/post/traffic'">교통</button>
+<button id="talk" onclick="window.location.href='/post/talk'">잡담</button>
+<button id="lodging" onclick="window.location.href='/post/lodging'">숙소</button>
+<button id="food" onclick="window.location.href='/post/food'">음식</button>
+<button id="hotplace" onclick="window.location.href='/post/hotplace'">핫플</button>
+<button id="traffic" onclick="window.location.href='/post/traffic'">교통</button>
 
 <br>
-<!--채팅방 영역-->
-<!--<button id="talkchat" onclick="location.href='/post/talk'">잡담</button>
-<button id="lodgingchat" onclick="location.href='/post/lodging'">숙소</button>
-<button id="foodchat" onclick="location.href='/post/food'">음식</button>
-<button id="hotplacechat" onclick="location.href='/post/hotplace'">핫플</button>
-<button id="trafficchat" onclick="location.href='/post/traffic'">교통</button>-->
+
+<div id="chat-buttons">
+    <button id="talkchat" chatRoomId='' onclick="enterChat(event)">잡담</button>
+    <button id="lodgingchat" chatRoomId='' onclick="enterChat(event)">숙소</button>
+    <button id="foodchat" chatRoomId='' onclick="enterChat(event)">음식</button>
+    <button id="hotplacechat" chatRoomId='' onclick="enterChat(event)">핫플</button>
+    <button id="trafficchat" chatRoomId='' onclick="enterChat(event)">교통</button>
+</div>
 </body>
 </html>
