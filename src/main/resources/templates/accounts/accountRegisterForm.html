@@ -20,6 +20,31 @@
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
         function register() {
+
+            const regex = /^\d{3}-\d{3,4}-\d{4}$/;
+            const nameregex = /^[가-힣]{2,10}$/
+
+            if($("#userId").val() == ''){
+                alert("사용자 아이디가 입력되지 않았습니다");
+            }
+
+            if($("#password").val() == ''){
+                alert("패스워드가 입력되지 않았습니다");
+            }
+
+            if($("#password").val() != $("#passwordConfirm").val()){
+                alert("패스워드가 동일하지 않습니다");
+            }
+
+            if(!nameregex.test($("#userName").val())){
+                alert("한글 이름으로 입력해주세요");
+            }
+
+            if(!regex.test($("#phoneNumber").val())){
+                alert('010-****-**** 형식으로 입력해주세요');
+                }
+
+                else{
             var data = {
                 "userId": $("#userId").val(),
                 "password": $("#password").val(),
@@ -43,6 +68,7 @@
                     alert(response.error.message);
                 }
             });
+            }
         }
 
     </script>
@@ -54,7 +80,7 @@
 
 <div class="container">
     <div align="center" style="margin-bottom: 20px;">
-        <h1><a href="/omg">Place Of Meeting</a></h1>
+        <h1><a href="/members/login">Place Of Meeting</a></h1>
     </div>
 </div>
 
@@ -86,7 +112,7 @@
         <input type="text" name="userName" class="form-control" id="userName" rows="3">
     </div>
     <div class="mb-3">
-        <label for="phoneNumber" class="form-label">사용자 휴대전화 번호(*)</label>
+        <label for="phoneNumber" class="form-label">사용자 휴대전화 번호 (010-****-****)</label>
         <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" rows="3"></textarea>
     </div>
 

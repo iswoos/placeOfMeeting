@@ -2,9 +2,7 @@ package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.ChatRoom;
 import com.example.placemeeting.domain.Member;
-import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest;
 import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest.ChatRoomCreate;
-import com.example.placemeeting.dto.responsedto.ChatRoomResponse;
 import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
 import com.example.placemeeting.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +41,7 @@ public class ChatService {
     }
 
     //채팅방 하나 불러오기
-    public ChatRoom findById(String roomId) {
+    public ChatRoom findById(Long roomId) {
         return chatRooms.get(roomId);
     }
 
