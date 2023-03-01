@@ -40,14 +40,14 @@ public class Post extends BaseEntity {
     private String cityName;
 
     @Enumerated(EnumType.STRING)
-    private PostType postType;
+    private PostAndChatType postType;
 
     public Post(Member member, PostCreate postCreate) {
         this.member = member;
         this.title = postCreate.getTitle();
         this.context = postCreate.getContext();
         this.cityName = member.getCityName();
-        this.postType = PostType.valueOf(postCreate.getPostType());
+        this.postType = PostAndChatType.valueOf(postCreate.getPostType());
     }
 
     public void plusLike() {

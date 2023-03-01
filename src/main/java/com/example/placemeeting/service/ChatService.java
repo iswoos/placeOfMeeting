@@ -1,6 +1,9 @@
 package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.ChatRoom;
+import com.example.placemeeting.domain.Member;
+import com.example.placemeeting.dto.responsedto.ChatRoomResponse;
+import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
 import com.example.placemeeting.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,12 +29,13 @@ public class ChatService {
     }
 
     //채팅방 불러오기
-    public List<ChatRoom> findAllRoom() {
+    public List<ChatRoomResDto> findAllRoom(Member member) {
         //채팅방 최근 생성 순으로 반환
-        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-        Collections.reverse(result);
+        List<ChatRoom> chatRoomList = chatRoomRepository.findByCityName(member.getCityName());
 
-        return result;
+        return chatRoomList.stream()
+                .map(ChatRoomResDto::new)
+                .collect(Collectors.toList());
     }
 
     //채팅방 하나 불러오기
@@ -39,10 +44,9 @@ public class ChatService {
     }
 
     //채팅방 생성
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
+    public ChatRoom createRoom(String chatType, Member member) {
+        ChatRoom chatRoom = new ChatRoom(chatType, member);
         chatRoomRepository.save(chatRoom);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }
 }

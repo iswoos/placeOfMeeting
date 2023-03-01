@@ -1,7 +1,6 @@
 package com.example.placemeeting.service;
 
 import com.example.placemeeting.domain.*;
-import com.example.placemeeting.dto.reqeustdto.CommentRequest;
 import com.example.placemeeting.dto.reqeustdto.CommentRequest.getComment;
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
 import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
@@ -34,7 +33,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostMainResDto> getPosts(String postType, Member member) {
 
-        List<Post> postList = postRepository.findByPostTypeAndCityName(PostType.valueOf(postType), member.getCityName());
+        List<Post> postList = postRepository.findByPostTypeAndCityName(PostAndChatType.valueOf(postType), member.getCityName());
 
         return postList.stream() // postList를 stream으로 변환
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed()) // 생성일자 최신기준으로 정렬

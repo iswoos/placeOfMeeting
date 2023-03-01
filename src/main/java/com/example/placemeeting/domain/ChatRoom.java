@@ -18,14 +18,13 @@ public class ChatRoom extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String roomId; //룸 아이디
-    private String roomName; //룸 이름
+    private String cityName; // 룸 지역
 
+    @Enumerated(EnumType.STRING)
+    private PostAndChatType postAndChatType; // 룸 타입
 
-    public static ChatRoom create(String name) {
-        ChatRoom room = new ChatRoom();
-        room.roomId = UUID.randomUUID().toString();
-        room.roomName = name;
-        return room;
+    public ChatRoom(String chatType, Member member) {
+        this.cityName = member.getCityName();
+        this.postAndChatType = PostAndChatType.valueOf(chatType);
     }
 }
