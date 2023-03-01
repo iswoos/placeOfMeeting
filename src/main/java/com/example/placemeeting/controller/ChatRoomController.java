@@ -2,40 +2,34 @@ package com.example.placemeeting.controller;
 
 
 import com.example.placemeeting.domain.ChatRoom;
+import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
+import com.example.placemeeting.global.dto.ResponseDto;
+import com.example.placemeeting.security.user.UserDetailsImpl;
 import com.example.placemeeting.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatRoomController {
     private final ChatService chatService;
 
-    // 채팅 리스트 화면
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
-    }
-
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> room() {
-        return chatService.findAllRoom();
+    public ResponseDto<List<ChatRoomResDto>> room(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(chatService.findAllRoom(userDetails.getAccount()));
     }
 
     // 채팅방 생성
     @PostMapping("/room") //채팅방 생성
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-
-        System.out.println("방생성");
-        return chatService.createRoom(name);
+    public ResponseDto<ChatRoom> createRoom(@RequestParam("chatType") String chatType, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(chatService.createRoom(chatType, userDetails.getAccount()));
     }
 
     // 채팅방 입장 화면

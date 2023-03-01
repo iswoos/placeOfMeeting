@@ -1,6 +1,6 @@
 package com.example.placemeeting.domain;
 
-public enum PostType {
+public enum PostAndChatType {
     TALK,
     LODGING,
     FOOD,
