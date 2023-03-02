@@ -4,6 +4,7 @@ package com.example.placemeeting.controller;
 import com.example.placemeeting.domain.ChatRoom;
 import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest;
 import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest.ChatRoomCreate;
+import com.example.placemeeting.dto.responsedto.ChatRoomResponse;
 import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
 import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.security.user.UserDetailsImpl;
@@ -29,15 +30,13 @@ public class ChatRoomController {
 
     // 채팅방 생성
     @PostMapping("/room") //채팅방 생성
-    @ResponseBody
     public ResponseDto<ChatRoom> createRoom(@RequestBody ChatRoomCreate chatRoomCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(chatService.createRoom(chatRoomCreate, userDetails.getAccount()));
     }
 
     // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public ChatRoom roomInfo(@PathVariable Long roomId) {
-        return chatService.findById(roomId);
+    public ResponseDto<ChatRoomResDto> roomInfo(@PathVariable Long roomId) {
+        return ResponseDto.success(chatService.findById(roomId));
     }
 }

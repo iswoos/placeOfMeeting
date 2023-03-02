@@ -3,7 +3,10 @@ package com.example.placemeeting.service;
 import com.example.placemeeting.domain.ChatRoom;
 import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest.ChatRoomCreate;
+import com.example.placemeeting.dto.responsedto.ChatRoomResponse;
 import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
+import com.example.placemeeting.exception.CustomCommonException;
+import com.example.placemeeting.exception.ErrorCode;
 import com.example.placemeeting.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +44,13 @@ public class ChatService {
     }
 
     //채팅방 하나 불러오기
-    public ChatRoom findById(Long roomId) {
-        return chatRooms.get(roomId);
+    public ChatRoomResDto findById(Long roomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.CHAT_NOT_FOUND)
+        );
+
+        ChatRoomResDto chatRoomResDto = new ChatRoomResDto(chatRoom);
+        return chatRoomResDto;
     }
 
     //채팅방 생성

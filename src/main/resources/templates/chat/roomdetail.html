@@ -20,7 +20,7 @@
 </div>
 <div class="container" id="app" v-cloak>
     <div>
-        <h2>{{room.name}}</h2>
+        <h2>{{room.postAndChatType}}</h2>
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
@@ -59,11 +59,13 @@
             message: '',
             messages: []
         },
+
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
             this.sender = localStorage.getItem('wschat.sender');
             this.findRoom();
         },
+
         methods: {
             findRoom: function() {
                 axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
@@ -72,11 +74,13 @@
                 ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
             this.message = '';
         },
+
         recvMessage: function(recv) {
                 this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
             }
         }
     });
+
 
     function connect() {
         // pub/sub event

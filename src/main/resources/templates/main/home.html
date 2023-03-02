@@ -14,7 +14,6 @@
                         type: "GET",
                         headers: {'Content-Type': 'application/json', 'Authorization': token},
                         success: function(response) {
-                            console.log(response.userName);
                             localStorage.setItem("wschat.sender", response.userName)
                             $("#location").text(response.cityName + ", " + response.weatherStatus + ", " + response.temperature+"℃");
                         },
