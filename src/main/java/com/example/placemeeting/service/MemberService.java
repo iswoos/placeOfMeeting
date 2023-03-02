@@ -148,6 +148,7 @@ public class MemberService {
         String lat = member.getLatitude().toString();
 
         String cityName = member.getCityName();
+        String userName = member.getUserName();
 
         // OpenWeather API 호출
         RestTemplate restTemplate2 = new RestTemplate();
@@ -168,6 +169,7 @@ public class MemberService {
         result.put("cityName", cityName);
         result.put("weatherStatus", weatherStatus);
         result.put("temperature", temperature);
+        result.put("userName", userName);
 
         return result;
     }

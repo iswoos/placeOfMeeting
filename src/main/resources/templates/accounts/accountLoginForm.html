@@ -32,6 +32,16 @@
     function accountLogin() {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
+
+            if($("#userId").val() ==''){
+                alert("아이디를 입력해주세요")
+            }
+
+            if($("#password").val() == ''){
+                alert("비밀번호를 입력해주세요")
+            }
+
+            else{
                 var data = {
                     "userId": $("#userId").val(),
                     "password": $("#password").val(),
@@ -55,6 +65,7 @@
                         alert(response.error.message);
                     }
                 });
+                }
             });
         } else {
             alert("위치 정보에 동의해야만 서비스 이용이 가능합니다");
@@ -71,7 +82,7 @@
 
 <div class="container">
     <div align="center" style="margin-bottom: 20px;">
-        <h1><a href="/omg">Place Of Meeting</a></h1>
+        <h1><a href="/members/login">Place Of Meeting</a></h1>
     </div>
 </div>
 
@@ -94,9 +105,9 @@
         사용자 로그인
     </button>
 
-    <button type="button" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control"
-            style="height: 50px">관리자 로그인
-    </button>
+<!--    <button type="button" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control"-->
+<!--            style="height: 50px">관리자 로그인-->
+<!--    </button>-->
     <button type="submit" onclick="location.href='/members/signup'" class="loginBtn btn btn-success form-control"
             style="height: 50px">회원가입
     </button>
