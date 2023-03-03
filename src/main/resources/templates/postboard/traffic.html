@@ -29,7 +29,6 @@
                                 let userName = post.userName;
                                 let likeNum = post.likeNum;
                                 let commentNum = post.commentNum;
-                                let cityName = post.cityName;
                                 let createdAt = post.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16) ;
 
                             let tmpPosts =
@@ -45,7 +44,6 @@
 
 
                             $("#posts").append(tmpPosts);
-                            $("#category").text(cityName + "게시판");
                         }
                         },
                         error: function(xhr, status, error) {
@@ -58,7 +56,7 @@
     </script>
 </head>
 <body>
-<h1 id = "category">게시판</h1>
+<h1 id = "category">교통 게시판</h1>
 <table class = "table table-striped">
     <thead>
     <tr>
