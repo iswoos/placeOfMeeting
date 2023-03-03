@@ -60,7 +60,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     alert("회원가입이 완료되었습니다.");
-                    window.location.href = '/members/login';
+                    window.location.href = '/';
                 },
                 error : function(xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);
