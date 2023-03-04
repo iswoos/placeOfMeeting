@@ -15,7 +15,9 @@
                         headers: {'Content-Type': 'application/json', 'Authorization': token},
                         success: function(response) {
                             localStorage.setItem("wschat.sender", response.userName)
-                            $("#location").text(response.cityName + ", " + response.weatherStatus + ", " + response.temperature+"℃");
+                            $("#location").text(response.cityName + " 시민끼리만 볼 수 있어요 😁" + response.weatherStatus + ", " + response.temperature+"℃");
+                            $("#weather").text("현재 날씨: " + response.weatherStatus);
+                            $("#temperature").text("현재 기온: " + response.temperature+"℃");
                         },
                         error: function(xhr, status, error) {
                             console.log(error);
@@ -128,8 +130,10 @@
 
     </script>
 <div id="location"></div>
+<div id="weather"></div>
+<div id="temperature"></div>
 
-
+게시판 영역
 <button id="talk" onclick="window.location.href='/post/talk'">잡담</button>
 <button id="lodging" onclick="window.location.href='/post/lodging'">숙소</button>
 <button id="food" onclick="window.location.href='/post/food'">음식</button>
@@ -138,7 +142,7 @@
 
 <br>
 
-<div id="chat-buttons">
+<div id="chat-buttons"> 오픈채팅방 영역
     <button id="talkchat" chatRoomId='' onclick="enterChat(event)">잡담</button>
     <button id="lodgingchat" chatRoomId='' onclick="enterChat(event)">숙소</button>
     <button id="foodchat" chatRoomId='' onclick="enterChat(event)">음식</button>
