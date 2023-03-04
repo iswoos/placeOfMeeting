@@ -85,15 +85,20 @@ public class MemberService {
         String lat = loginReqDto.getLatitude().toString();
 
         // NAVER Reverse Geocoding API 호출
+        // 1. RestTemplate 객체 생성
         RestTemplate restTemplate = new RestTemplate();
+        // 2. header 설정을 위해 HttpHeader 클래스 생성
         HttpHeaders headers = new HttpHeaders();
+        // 3. API 요청에 따라, ID와 키값을 헤더에 세팅
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("X-NCP-APIGW-API-KEY-ID", clientId);
         headers.set("X-NCP-APIGW-API-KEY", clientSecret);
+        // 3. HttpEntity 객체에 HttpHeader를 넣어줌
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        // 4. exchange() 메소드로 api를 호출 (NAVER_REVERSE_GEOCODING_API_URL의 요청 URL 별도로 세팅해두었음)
         ResponseEntity<String> responseEntity = restTemplate.exchange(
                 NAVER_REVERSE_GEOCODING_API_URL, HttpMethod.GET, requestEntity, String.class, lng, lat);
-        // return responseEntity.getBody();
+        // 호출한 후 responseEntity의 Body값을 가져옴
         String responseBody = responseEntity.getBody();
         // JSON 객체로 변환
         JSONObject jsonObject = new JSONObject(responseBody);
