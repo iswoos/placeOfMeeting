@@ -8,7 +8,6 @@
     $(document).ready(function () {
         let token = localStorage.getItem("Authorization");
         let postId = $("#postId").val();
-        console.log(postId);
 
         $.ajax({
             url: "/posts/" + postId,
@@ -17,7 +16,6 @@
             success: function(response) {
                 let post = response.data;
 
-                console.log(post);
 
                 let userName = post.userName;
                 let title = post.title;
@@ -27,11 +25,8 @@
                 let cityName = post.cityName;
                 let createdAt = post.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16) ;
 
-                console.log(cityName);
 
                 let comments = post.comments;
-
-                console.log(comments);
 
 
                 $('#cityName').append(cityName + ' ' + "게시판");
@@ -87,6 +82,11 @@
         let token = localStorage.getItem("Authorization");
         let postId = $("#postId").val();
 
+        if($("#comment").val() ==''){
+            alert("댓글 내용을 입력해주세요")
+        }
+
+        else{
         var data = {
                     "context": $("#comment").val()
                 }
@@ -105,6 +105,7 @@
                 console.log(error);
             }
         });
+        }
     }
 
 </script>

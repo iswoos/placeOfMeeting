@@ -30,8 +30,15 @@
     function createPost() {
         let token = localStorage.getItem("Authorization");
 
-        console.log("aa");
+        if($("#title").val() ==''){
+            alert("글 제목을 입력해주세요")
+        }
 
+        if($("#context").val() ==''){
+            alert("글 내용을 입력해주세요")
+        }
+
+        else{
         var data = {
             "title": $("#title").val(),
             "context": $("#context").val(),
@@ -51,6 +58,7 @@
                 console.log(error);
             }
         });
+        }
     }
 
     </script>
