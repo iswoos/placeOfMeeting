@@ -15,7 +15,7 @@
                         headers: {'Content-Type': 'application/json', 'Authorization': token},
                         success: function(response) {
                             localStorage.setItem("wschat.sender", response.userName)
-                            $("#location").text(response.cityName + " 시민끼리만 볼 수 있어요 😁" + response.weatherStatus + ", " + response.temperature+"℃");
+                            $("#location").text(response.cityName + " 시민끼리만 볼 수 있어요 😁");
                             $("#weather").text("현재 날씨: " + response.weatherStatus);
                             $("#temperature").text("현재 기온: " + response.temperature+"℃");
                         },
@@ -133,7 +133,7 @@
 <div id="weather"></div>
 <div id="temperature"></div>
 
-게시판 영역
+<p>게시판 영역</p>
 <button id="talk" onclick="window.location.href='/post/talk'">잡담</button>
 <button id="lodging" onclick="window.location.href='/post/lodging'">숙소</button>
 <button id="food" onclick="window.location.href='/post/food'">음식</button>
@@ -142,7 +142,8 @@
 
 <br>
 
-<div id="chat-buttons"> 오픈채팅방 영역
+<p>오픈채팅방 영역</p>
+<div id="chat-buttons">
     <button id="talkchat" chatRoomId='' onclick="enterChat(event)">잡담</button>
     <button id="lodgingchat" chatRoomId='' onclick="enterChat(event)">숙소</button>
     <button id="foodchat" chatRoomId='' onclick="enterChat(event)">음식</button>
