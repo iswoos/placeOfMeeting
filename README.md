@@ -2,7 +2,7 @@
 만남의광장-위치기반 실시간 정보교환 여행어플
 
 # 서비스가 궁금하다면? (MVP구현완료 추가개선 중)
-> https://leetils.shop/pom 클릭!
+> https://leetils.shop 클릭!
 
 <br>
 
