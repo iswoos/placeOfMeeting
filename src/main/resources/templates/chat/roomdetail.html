@@ -57,7 +57,7 @@
             room: {},
             sender: '',
             message: '',
-            messages: []
+            messages: [],
         },
 
         created() {
@@ -74,6 +74,7 @@
             },
             sendMessage: function() {
                 ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
+                axios.post('urlasdfsdf', {room: 1, lasdf: "asdf"})
             this.message = '';
         },
 
