@@ -3,6 +3,7 @@ package com.example.placemeeting.domain;
 import com.example.placemeeting.dto.reqeustdto.MemberRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Member extends BaseEntity {
 

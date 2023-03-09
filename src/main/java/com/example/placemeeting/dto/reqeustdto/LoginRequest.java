@@ -23,5 +23,11 @@ public class LoginRequest {
         this.password = password;
     }
 
+    public LoginRequest(String userId, String password, double latitude, double longitude) {
+        this.userId = userId;
+        this.password = password;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
 
