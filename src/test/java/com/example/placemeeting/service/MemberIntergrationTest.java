@@ -4,13 +4,13 @@ import com.example.placemeeting.dto.reqeustdto.LoginRequest;
 import com.example.placemeeting.dto.reqeustdto.MemberRequest;
 import com.example.placemeeting.dto.responsedto.MemberResDto;
 import com.example.placemeeting.exception.CustomCommonException;
-import com.example.placemeeting.service.MemberService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 // 테스트가 종료될 때 자동으로 해당 트랜잭션이 롤백되어 테스트 코드가 변경한 DB를 테스트 이전 상태로 돌려준다
 @Transactional
-class MemberTest {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+class MemberIntergrationTest {
 
     @Autowired
     private MemberService memberService;
@@ -61,7 +62,7 @@ class MemberTest {
 
         //when
         CustomCommonException customCommonException = assertThrows(CustomCommonException.class, () -> {
-            memberService.signup(new MemberRequest("lsw", "lsw", "유저네임", "010-4549-4736"));
+            memberService.signup(new MemberRequest("lsww", "lsw", "유저네임", "010-4549-4736"));
         });
 
         //then
