@@ -9,11 +9,13 @@ import com.example.placemeeting.dto.responsedto.PostResponse;
 import com.example.placemeeting.repository.MemberRepository;
 import com.example.placemeeting.repository.PostRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,7 +24,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-public class PostTest {
+// 통합 테스트 진행 시, 1번 생성된 Application Context를 테스트간에 공유함으로써 전체 테스트가 실패하고 있었음
+// 해당 현상해결을 위해 테스트케이스 수행하기 전, 수행한 후에 Application Context를 재생성하는 @DirtiesContext를 활용함
+// 하지만 context재생성으로 인해 테스트 소요시간이 매우 길다.
+// 추가 발생현상을 해결하기 위한 방법을 모색해보자
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class PostIntergrationTest {
 
     @Autowired
     private MemberService memberService;
