@@ -9,18 +9,17 @@ import com.example.placemeeting.dto.responsedto.PostResponse;
 import com.example.placemeeting.repository.MemberRepository;
 import com.example.placemeeting.repository.PostRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @SpringBootTest
 @Transactional
@@ -28,7 +27,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 // 해당 현상해결을 위해 테스트케이스 수행하기 전, 수행한 후에 Application Context를 재생성하는 @DirtiesContext를 활용함
 // 하지만 context재생성으로 인해 테스트 소요시간이 매우 길다.
 // 추가 발생현상을 해결하기 위한 방법을 모색해보자
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+
+// @sql 활용하여 테스트 메서드가 실행되기 전마다 테이블을 TRUNCATE하는 방식으로 변경하였음!
+// 해당 방식으로 인해 테스트 메서드마다 ApplicationContext가 새로 load되지 않도록 가능하게 하였음
+@Sql(scripts = {"classpath:sql/truncate.sql"}, executionPhase = BEFORE_TEST_METHOD)
 public class PostIntergrationTest {
 
     @Autowired
@@ -41,6 +44,7 @@ public class PostIntergrationTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
 
     @Test
     @DisplayName("게시글 등록 테스트")
