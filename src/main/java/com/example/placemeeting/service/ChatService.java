@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class ChatService {
     }
 
     //채팅방 하나 불러오기
-    public ChatRoomResDto findById(Long roomId) {
+    public ChatRoomResDto findById(Long roomId, Member member) {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.CHAT_NOT_FOUND)
         );

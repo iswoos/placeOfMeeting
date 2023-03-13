@@ -31,8 +31,9 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 
 // @sql 활용하여 테스트 메서드가 실행되기 전마다 테이블을 TRUNCATE하는 방식으로 변경하였음!
 // 해당 방식으로 인해 테스트 메서드마다 ApplicationContext가 새로 load되지 않도록 가능하게 하였음
+// truncate.sql 파일은 꼭 resources 폴더 내에 있어야함
 @Sql(scripts = {"classpath:sql/truncate.sql"}, executionPhase = BEFORE_TEST_METHOD)
-public class PostIntergrationTest {
+public class PostIntegrationTest {
 
     @Autowired
     private MemberService memberService;
