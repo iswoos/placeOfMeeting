@@ -120,7 +120,7 @@
 <!--3. 채널이름에 따라 MessageController에 메시지 송신-->
 <!--4. ENTER 타입이니 그에 따른 값이 할당되어 sendingOperations.convertAndSend("/sub/chat/room/"+message.getRoomId(),message);를 통해 구독채널로 발행 -->
 
-            ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:vm.$data.roomId, sender:vm.$data.sender}));
+            ws.send("/pub/chat/enter", {}, JSON.stringify({type:'ENTER', roomId:vm.$data.roomId, sender:vm.$data.sender}));
         }
 
         , function(error) {
