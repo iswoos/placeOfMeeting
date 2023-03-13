@@ -29,6 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseDto<Object>> exception(Exception e) {
+        e.printStackTrace();
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         return new ResponseEntity<>(ResponseDto.fail(
                 errorCode.getStatus(), errorCode.getHttpStatus(), errorCode.getMessage()),

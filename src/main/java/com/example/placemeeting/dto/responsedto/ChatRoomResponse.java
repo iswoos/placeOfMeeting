@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class ChatRoomResponse {
 
     @NoArgsConstructor
@@ -24,6 +27,5 @@ public class ChatRoomResponse {
             this.cityName = chatRoom.getCityName();
             this.postAndChatType = chatRoom.getPostAndChatType();
         }
-
-        }
+    }
 }

@@ -15,6 +15,8 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        String sessionId = accessor.getSessionId();
+
         StompCommand command = accessor.getCommand();
         if (command.compareTo(StompCommand.SUBSCRIBE) == 0) {
             String destination = accessor.getDestination();

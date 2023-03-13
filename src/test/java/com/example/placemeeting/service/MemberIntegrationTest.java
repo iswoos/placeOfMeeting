@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 // 테스트가 종료될 때 자동으로 해당 트랜잭션이 롤백되어 테스트 코드가 변경한 DB를 테스트 이전 상태로 돌려준다
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class MemberIntergrationTest {
+class MemberIntegrationTest {
 
     @Autowired
     private MemberService memberService;

@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class ChatRoomController {
 
     // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")
-    public ResponseDto<ChatRoomResDto> roomInfo(@PathVariable Long roomId) {
-        return ResponseDto.success(chatService.findById(roomId));
+    public ResponseDto<ChatRoomResDto> roomInfo(@PathVariable Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(chatService.findById(roomId, userDetails.getAccount()));
     }
 }
