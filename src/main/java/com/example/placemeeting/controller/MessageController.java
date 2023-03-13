@@ -1,9 +1,12 @@
 package com.example.placemeeting.controller;
 
 import com.example.placemeeting.domain.ChatMessage;
+import com.example.placemeeting.dto.responsedto.ChatMessageResponse;
+import com.example.placemeeting.dto.responsedto.ChatMessageResponse.ChatMessageResDto.MessageType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,29 +24,46 @@ public class MessageController { //채팅이 처리되는곳!
     //클라이언트가 Send 할수 있는 경로
     // /pub/chat/message 받으면
     @MessageMapping("/chat/message")
-    public void enter(ChatMessage message) {
+    public void message(ChatMessage message) {
         System.out.println("채팅 시작!");
         LocalTime now = LocalTime.now();
         message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
+        if (ChatMessage.MessageType.TALK.equals(message.getType())) {
+            message.setMessage(message.getMessage() + " - " + message.getSendTime());
+            sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+        }
+    }
+
+    @MessageMapping("/chat/enter")
+    public void enter(ChatMessage message, SimpMessageHeaderAccessor headerAccessor) {
+        LocalTime now = LocalTime.now();
+
+        // stomp에 connect할 경우 자동으로 pub보내도록 설정하여 아래와 같이 socket session에 값 저장진행
+        headerAccessor.getSessionAttributes().put("sender",message.getSender());
+        headerAccessor.getSessionAttributes().put("roomId",message.getRoomId());
+
+        message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
             message.setMessage(message.getSender() + "님이 입장하였습니다" + " - " + message.getSendTime());
-        } else if (ChatMessage.MessageType.QUIT.equals(message.getType())) {
-            message.setMessage(message.getSender() + "님이 퇴장하였습니다" + " - " + message.getSendTime());
-        } else {
-            message.setMessage(message.getMessage() + " - " + message.getSendTime());
+            sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         }
-        sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
     @EventListener
     public void webSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+
+        // socket 세션에 있던 sender 와 roomId 확인
+        String sender = (String) headerAccessor.getSessionAttributes().get("sender");
         String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
-        System.out.println("aaa");
-        System.out.println(roomId);
 
-        sendingOperations.convertAndSend("/sub/chat/room/" + roomId, 123);
+        ChatMessageResponse.ChatMessageResDto chatMessageResDto = new ChatMessageResponse.ChatMessageResDto(
+                MessageType.QUIT, roomId, sender, "", "");
 
-//        message.setMessage(message.getSender() + "님이 퇴장하였습니다" + " - " + message.getSendTime());
+        LocalTime now = LocalTime.now();
+        chatMessageResDto.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
+        chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다" + " - " + chatMessageResDto.getSendTime());
+
+        sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
 }
