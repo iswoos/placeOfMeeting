@@ -26,7 +26,7 @@ public class ChatMessageResponse {
         private String roomId;
 
         private String sender;
-        //내용
+
         private String message;
 
         private String sendTime;

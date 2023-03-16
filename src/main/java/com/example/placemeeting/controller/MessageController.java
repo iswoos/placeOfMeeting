@@ -22,7 +22,7 @@ public class MessageController { //채팅이 처리되는곳!
     private final SimpMessageSendingOperations sendingOperations; // @EnableWebSocketMessageBroker를 통해서 등록되는 Bean이다. Broker로 메시지를 전달한다.
 
     //클라이언트가 Send 할수 있는 경로
-    // /pub/chat/message 받으면
+    // /pub/chat/message에 받으면 전처리 후에 converAndSend로 구독채널에 발행
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
         System.out.println("채팅 시작!");
@@ -34,6 +34,8 @@ public class MessageController { //채팅이 처리되는곳!
         }
     }
 
+    // 입력별로 내가 할수있는 채팅 DB처리를 진행해보자
+    
     @MessageMapping("/chat/enter")
     public void enter(ChatMessage message, SimpMessageHeaderAccessor headerAccessor) {
         LocalTime now = LocalTime.now();
@@ -49,6 +51,7 @@ public class MessageController { //채팅이 처리되는곳!
         }
     }
 
+    // websocket Disconnect 감지하여 처리하는 eventListener
     @EventListener
     public void webSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
