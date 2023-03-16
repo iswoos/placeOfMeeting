@@ -87,7 +87,7 @@
 <!--자바 스크립트에서 배열에 새로운 값을 추가하고 싶을 경우, 앞에 추가하고 싶을 땐 unshift 뒤에 추가하고 싶을 땐 push를 사용하면됨-->
 <!--7. vue의 messages 배열에 구독채널에서 받은 JSON BODY를 이용하여 type, sender, message를 추가-->
         recvMessage: function(recv) {
-                this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'알림':recv.sender,"message":recv.message})
+                this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'||'QUIT'?'알림':recv.sender,"message":recv.message})
             }
         }
     });
