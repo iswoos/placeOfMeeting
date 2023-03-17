@@ -1,8 +1,10 @@
 package com.example.placemeeting.controller;
 
 import com.example.placemeeting.domain.ChatMessage;
+import com.example.placemeeting.dto.reqeustdto.ChatMessageRequest;
 import com.example.placemeeting.dto.responsedto.ChatMessageResponse;
 import com.example.placemeeting.dto.responsedto.ChatMessageResponse.ChatMessageResDto.MessageType;
+import com.example.placemeeting.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,21 +23,30 @@ public class MessageController { //채팅이 처리되는곳!
 
     private final SimpMessageSendingOperations sendingOperations; // @EnableWebSocketMessageBroker를 통해서 등록되는 Bean이다. Broker로 메시지를 전달한다.
 
+    private final ChatMessageService chatMessageService;
+
     //클라이언트가 Send 할수 있는 경로
     // /pub/chat/message에 받으면 전처리 후에 converAndSend로 구독채널에 발행
+
+
+    // 채팅방 내, 일반적인 정보교환 시 매핑됨
+    // 1. 아래에 매핑되는 채팅 내용을 DB에 저장
+    // 2. 저장요소 :  채팅 타입 / 채팅룸ID / 발신자 / 메시지 / 보낸시간
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
         System.out.println("채팅 시작!");
         LocalTime now = LocalTime.now();
         message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
+
+        chatMessageService.createChatMessage(new ChatMessageRequest.ChatMessageCreate(message));
+
         if (ChatMessage.MessageType.TALK.equals(message.getType())) {
             message.setMessage(message.getMessage() + " - " + message.getSendTime());
             sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         }
     }
 
-    // 입력별로 내가 할수있는 채팅 DB처리를 진행해보자
-    
+    // websocket connect시 (채팅방 입장) 자동실행
     @MessageMapping("/chat/enter")
     public void enter(ChatMessage message, SimpMessageHeaderAccessor headerAccessor) {
         LocalTime now = LocalTime.now();
@@ -43,15 +54,15 @@ public class MessageController { //채팅이 처리되는곳!
         // stomp에 connect할 경우 자동으로 pub보내도록 설정하여 아래와 같이 socket session에 값 저장진행
         headerAccessor.getSessionAttributes().put("sender",message.getSender());
         headerAccessor.getSessionAttributes().put("roomId",message.getRoomId());
-
         message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
+
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
             message.setMessage(message.getSender() + "님이 입장하였습니다" + " - " + message.getSendTime());
             sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         }
     }
 
-    // websocket Disconnect 감지하여 처리하는 eventListener
+    // websocket Disconnect (채팅방 퇴장) 감지하여 처리하는 eventListener
     @EventListener
     public void webSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
