@@ -3,7 +3,6 @@ package com.example.placemeeting.service;
 import com.example.placemeeting.domain.ChatRoom;
 import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.dto.reqeustdto.ChatRoomRequest.ChatRoomCreate;
-import com.example.placemeeting.dto.responsedto.ChatRoomResponse;
 import com.example.placemeeting.dto.responsedto.ChatRoomResponse.ChatRoomResDto;
 import com.example.placemeeting.exception.CustomCommonException;
 import com.example.placemeeting.exception.ErrorCode;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ChatService {
+public class ChatRoomService {
 
     private Map<String, ChatRoom> chatRooms;
 
