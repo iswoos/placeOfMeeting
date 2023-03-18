@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
@@ -19,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequiredArgsConstructor
-public class MessageController { //채팅이 처리되는곳!
+public class ChatMessageController { //채팅이 처리되는곳!
 
     private final SimpMessageSendingOperations sendingOperations; // @EnableWebSocketMessageBroker를 통해서 등록되는 Bean이다. Broker로 메시지를 전달한다.
 
@@ -80,4 +81,12 @@ public class MessageController { //채팅이 처리되는곳!
 
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
+
+    // 메시지를 불러올 때, 어떤 기준으로 주는 게 가장 좋을 지 생각해보자
+//    @Transactional
+//    public ChatMessageResponse.ChatMessageResDto chatMessageResDto() {
+//
+//    }
 }
+
+

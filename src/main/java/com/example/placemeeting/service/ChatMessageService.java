@@ -18,6 +18,7 @@ public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
 
+    //채팅메시지 생성 및 저장
     @Transactional
     public ChatMessageRequest.ChatMessageCreate createChatMessage(ChatMessageRequest.ChatMessageCreate chatMessageCreate) {
         ChatMessage chatMessage = new ChatMessage(chatMessageCreate);
@@ -25,15 +26,5 @@ public class ChatMessageService {
         return chatMessageCreate;
     }
 }
-
-    //채팅메시지 생성
-//    public ChatMessageRequest.ChatMessageCreate createChatMessage() {
-
-
-
-//    public ChatRoom createRoom(ChatRoomRequest.ChatRoomCreate chatRoomCreate, Member member) {
-//        ChatRoom chatRoom = new ChatRoom(chatRoomCreate.getChatType(), member);
-//        chatRoomRepository.save(chatRoom);
-//        return chatRoom;
 
 
