@@ -22,11 +22,13 @@
             margin-top: 5px;
         }
 
+
+
+
     </style>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-
 
 
     function accountLogin() {
@@ -75,6 +77,9 @@
 
 
 
+
+
+
     </script>
     <title>Document</title>
 </head>
@@ -95,19 +100,20 @@
 <div class="container">
     <div class="mb-3">
         <label for="userId" class="form-label">사용자 아이디</label>
-        <input type="text" class="form-control" id="userId" placeholder="사용자 아이디">
+<!--        enter 키 입력했을 경우 로그인 기능 실행-->
+        <input type="text" class="form-control" id="userId" placeholder="사용자 아이디" onkeydown ="if( event.keyCode == 13 ){accountLogin();}" />
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">패스워드</label>
-        <input type="password" class="form-control" id="password">
+        <input type="password" class="form-control" id="password" onkeydown ="if( event.keyCode == 13 ){accountLogin();}" />>
     </div>
     <button type="button" onclick="accountLogin()" class="loginBtn btn btn-primary form-control" style="height: 50px">
         사용자 로그인
     </button>
 
-<!--    <button type="button" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control"-->
-<!--            style="height: 50px">관리자 로그인-->
-<!--    </button>-->
+    <!--    <button type="button" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control"-->
+    <!--            style="height: 50px">관리자 로그인-->
+    <!--    </button>-->
     <button type="submit" onclick="location.href='/members/signup'" class="loginBtn btn btn-success form-control"
             style="height: 50px">회원가입
     </button>
