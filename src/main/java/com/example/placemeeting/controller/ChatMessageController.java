@@ -42,7 +42,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
         chatMessageService.createChatMessage(new ChatMessageRequest.ChatMessageCreate(message));
 
         if (ChatMessage.MessageType.TALK.equals(message.getType())) {
-            message.setMessage(message.getMessage() + " - " + message.getSendTime());
+            message.setMessage(message.getMessage());
             sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         }
     }
@@ -58,7 +58,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
         message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
 
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            message.setMessage(message.getSender() + "님이 입장하였습니다" + " - " + message.getSendTime());
+            message.setMessage(message.getSender() + "님이 입장하였습니다");
             sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         }
     }
@@ -77,7 +77,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
 
         LocalTime now = LocalTime.now();
         chatMessageResDto.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
-        chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다" + " - " + chatMessageResDto.getSendTime());
+        chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다");
 
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
