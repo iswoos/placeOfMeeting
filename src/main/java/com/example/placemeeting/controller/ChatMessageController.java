@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
@@ -19,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequiredArgsConstructor
-public class MessageController { //채팅이 처리되는곳!
+public class ChatMessageController { //채팅이 처리되는곳!
 
     private final SimpMessageSendingOperations sendingOperations; // @EnableWebSocketMessageBroker를 통해서 등록되는 Bean이다. Broker로 메시지를 전달한다.
 
@@ -41,7 +42,7 @@ public class MessageController { //채팅이 처리되는곳!
         chatMessageService.createChatMessage(new ChatMessageRequest.ChatMessageCreate(message));
 
         if (ChatMessage.MessageType.TALK.equals(message.getType())) {
-            message.setMessage(message.getMessage() + " - " + message.getSendTime());
+            message.setMessage(message.getMessage());
             sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         }
     }
@@ -57,7 +58,7 @@ public class MessageController { //채팅이 처리되는곳!
         message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
 
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            message.setMessage(message.getSender() + "님이 입장하였습니다" + " - " + message.getSendTime());
+            message.setMessage(message.getSender() + "님이 입장하였습니다");
             sendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         }
     }
@@ -76,8 +77,18 @@ public class MessageController { //채팅이 처리되는곳!
 
         LocalTime now = LocalTime.now();
         chatMessageResDto.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
-        chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다" + " - " + chatMessageResDto.getSendTime());
+        chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다");
 
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
+
+    // 메시지를 불러올 때, 어떤 기준으로 주는 게 가장 좋을 지 생각해보자
+    // 처음 입장하는 사용자에게 기존에 나눠진 대화를 보여주는 게 맞는 것일까?
+    // 처음 입장했을 때 발생하는 이벤트 측에, 최근 입력한 채팅이 있을 시에만 해당 데이터 이후의 채팅만 불러일으키게 해볼지 고민해봐야겠다
+//    @Transactional
+//    public ChatMessageResponse.ChatMessageResDto chatMessageResDto() {
+//
+//    }
 }
+
+

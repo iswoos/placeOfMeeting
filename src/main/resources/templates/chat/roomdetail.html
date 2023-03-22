@@ -33,7 +33,7 @@
     </div>
     <ul class="list-group">
         <li class="list-group-item" v-for="message in messages">
-            [{{message.sender}}] - {{message.message}}
+            [{{message.sender}}] - {{message.message}} - {{message.sendTime}}
         </li>
     </ul>
     <div></div>
@@ -88,9 +88,9 @@
 <!--7. vue의 messages 배열에 구독채널에서 받은 JSON BODY를 이용하여 type, sender, message를 추가-->
         recvMessage: function(recv) {
                 if (recv.type == 'ENTER' || recv.type == 'QUIT') {
-                    this.messages.unshift({"type":recv.type, "sender":'알림' ,"message":recv.message})
+                    this.messages.unshift({"type":recv.type, "sender":'알림' ,"message":recv.message, "sendTime":recv.sendTime})
                 } else{
-                    this.messages.unshift({"type":recv.type, "sender":recv.sender ,"message":recv.message})
+                    this.messages.unshift({"type":recv.type, "sender":recv.sender ,"message":recv.message, "sendTime":recv.sendTime})
                 }
             }
         }
