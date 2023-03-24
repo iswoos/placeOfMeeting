@@ -37,7 +37,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
     public void message(ChatMessage message) {
         System.out.println("채팅 시작!");
         LocalTime now = LocalTime.now();
-        message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
+        message.setSendTime(now.format(DateTimeFormatter.ofPattern("HH:mm")));
 
         chatMessageService.createChatMessage(new ChatMessageRequest.ChatMessageCreate(message));
 
@@ -55,7 +55,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
         // stomp에 connect할 경우 자동으로 pub보내도록 설정하여 아래와 같이 socket session에 값 저장진행
         headerAccessor.getSessionAttributes().put("sender",message.getSender());
         headerAccessor.getSessionAttributes().put("roomId",message.getRoomId());
-        message.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
+        message.setSendTime(now.format(DateTimeFormatter.ofPattern("HH:mm")));
 
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
             message.setMessage(message.getSender() + "님이 입장하였습니다");
@@ -76,7 +76,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
                 MessageType.QUIT, roomId, sender, "", "");
 
         LocalTime now = LocalTime.now();
-        chatMessageResDto.setSendTime(now.format(DateTimeFormatter.ofPattern("a HH시 mm분")));
+        chatMessageResDto.setSendTime(now.format(DateTimeFormatter.ofPattern("HH:mm")));
         chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다");
 
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
