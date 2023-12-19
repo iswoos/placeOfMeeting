@@ -12,7 +12,7 @@ services:
       # MYSQL_ROOT_PASSWORD는 root 계정의 비밀번호를 설정하고, TZ는 타임존을 설정합니다.
       MYSQL_DATABASE: place
       MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: root팅
+      MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
     command:
       - --character-set-server=utf8mb4
