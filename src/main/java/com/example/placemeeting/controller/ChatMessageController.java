@@ -6,6 +6,7 @@ import com.example.placemeeting.dto.responsedto.ChatMessageResponse;
 import com.example.placemeeting.dto.responsedto.ChatMessageResponse.ChatMessageResDto.MessageType;
 import com.example.placemeeting.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
+import nonapi.io.github.classgraph.json.JSONUtils;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -53,8 +54,8 @@ public class ChatMessageController { //채팅이 처리되는곳!
         LocalTime now = LocalTime.now();
 
         // stomp에 connect할 경우 자동으로 pub보내도록 설정하여 아래와 같이 socket session에 값 저장진행
-        headerAccessor.getSessionAttributes().put("sender",message.getSender());
-        headerAccessor.getSessionAttributes().put("roomId",message.getRoomId());
+        headerAccessor.getSessionAttributes().put("sender", message.getSender());
+        headerAccessor.getSessionAttributes().put("roomId", message.getRoomId());
         message.setSendTime(now.format(DateTimeFormatter.ofPattern("HH:mm")));
 
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
@@ -81,6 +82,9 @@ public class ChatMessageController { //채팅이 처리되는곳!
 
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
+
+    "asdf"
+
 
     // 메시지를 불러올 때, 어떤 기준으로 주는 게 가장 좋을 지 생각해보자
     // 처음 입장하는 사용자에게 기존에 나눠진 대화를 보여주는 게 맞는 것일까?
