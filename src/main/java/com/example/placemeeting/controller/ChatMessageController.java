@@ -79,11 +79,6 @@ public class ChatMessageController { //채팅이 처리되는곳!
         chatMessageResDto.setSendTime(now.format(DateTimeFormatter.ofPattern("HH:mm")));
         chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다");
 
-
-        "속았찌?"
-                "asdvsadv"
-                "sdlfkjalskdf"
-
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
 
