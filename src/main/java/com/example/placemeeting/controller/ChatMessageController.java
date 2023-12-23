@@ -83,10 +83,6 @@ public class ChatMessageController { //채팅이 처리되는곳!
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
 
-    "asdf"
-    fffffff
-
-
     // 메시지를 불러올 때, 어떤 기준으로 주는 게 가장 좋을 지 생각해보자
     // 처음 입장하는 사용자에게 기존에 나눠진 대화를 보여주는 게 맞는 것일까?
     // 처음 입장했을 때 발생하는 이벤트 측에, 최근 입력한 채팅이 있을 시에만 해당 데이터 이후의 채팅만 불러일으키게 해볼지 고민해봐야겠다
