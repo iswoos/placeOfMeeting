@@ -81,6 +81,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
 
 
         "속았찌?"
+                "asdvsadv"
         
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
