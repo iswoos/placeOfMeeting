@@ -84,6 +84,7 @@ public class ChatMessageController { //채팅이 처리되는곳!
     }
 
     "asdf"
+    fffffff
 
 
     // 메시지를 불러올 때, 어떤 기준으로 주는 게 가장 좋을 지 생각해보자
