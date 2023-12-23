@@ -80,11 +80,10 @@ public class ChatMessageController { //채팅이 처리되는곳!
         chatMessageResDto.setMessage(sender + "님이 퇴장하였습니다");
 
 
-        "wefwef"
-        "wefwef"
         "속았찌?"
                 "asdvsadv"
-        
+                "sdlfkjalskdf"
+
         sendingOperations.convertAndSend("/sub/chat/room/" + roomId, chatMessageResDto);
     }
 
