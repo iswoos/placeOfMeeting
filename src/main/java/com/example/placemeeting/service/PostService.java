@@ -73,7 +73,7 @@ public class PostService {
 
         return new PostDetailResDto(postRepository.detailPost(postId),comments);
     }
-ddd
+
     @Transactional
     public String likePost(Long postId, Member member) {
         Post post = postRepository.findById(postId).orElseThrow(
