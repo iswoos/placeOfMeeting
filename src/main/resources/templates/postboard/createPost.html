@@ -40,17 +40,22 @@
                 return;
             }
 
-            var data = new FormData();
-            data.append("title", $("#title").val());
-            data.append("context", $("#context").val());
-            data.append("postType", $("#postType").val());
-            data.append("image", $("#image")[0].files[0]);
+            var postDto = {
+                title: $("#title").val(),
+                context: $("#context").val(),
+                postType: $("#postType").val()
+            };
+
+            var formData = new FormData();
+            formData.append("file", $("#image")[0].files[0]);
+            formData.append("postData", new Blob([JSON.stringify(postDto)], { type: "application/json" }));
+
 
             $.ajax({
                 url: "/posts",
                 type: "POST",
                 headers: {'Authorization': token},
-                data: data,
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {

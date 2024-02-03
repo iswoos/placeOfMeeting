@@ -1,5 +1,11 @@
 package com.example.placemeeting.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.IOUtils;
+import com.example.placemeeting.config.CommonUtils;
 import com.example.placemeeting.domain.*;
 import com.example.placemeeting.dto.reqeustdto.CommentRequest.getComment;
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
@@ -12,9 +18,13 @@ import com.example.placemeeting.repository.CommentRepository;
 import com.example.placemeeting.repository.HeartRepository;
 import com.example.placemeeting.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +39,10 @@ public class PostService {
 
     private final CommentRepository commentRepository;
 
+    private final AmazonS3Client amazonS3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
 
     @Transactional(readOnly = true)
     public List<PostMainResDto> getPosts(String postType, Member member) {
@@ -55,9 +69,21 @@ public class PostService {
     }
 
     @Transactional
-    public String createPost(PostCreate postCreate, Member member) {
+    public String createPost(MultipartFile file ,PostRequest.PostCreate postCreate, Member member) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            String fileName = CommonUtils.buildFileName(file.getOriginalFilename());
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
 
-        postRepository.save(new Post(member,postCreate));
+            byte[] bytes = IOUtils.toByteArray(file.getInputStream());
+            objectMetadata.setContentLength(bytes.length);
+            ByteArrayInputStream byteArrayIs = new ByteArrayInputStream(bytes);
+
+            amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, byteArrayIs, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        }
+
+        postRepository.save(new Post(member, postCreate));
 
         return "게시물 등록완료";
     }

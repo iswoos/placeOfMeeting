@@ -9,8 +9,10 @@ import com.example.placemeeting.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,8 @@ public class PostController {
 
     // 게시물 등록하기
     @PostMapping("/posts")
-    public ResponseDto<String> createPost(@Valid @RequestBody PostRequest.PostCreate postCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(postService.createPost(postCreate, userDetails.getAccount()));
+    public ResponseDto<String> createPost(@RequestPart(required = false, value = "file") MultipartFile file, @RequestPart("postData") PostRequest.PostCreate postCreate, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        return ResponseDto.success(postService.createPost(file, postCreate, userDetails.getAccount()));
     }
 
     // 카테고리, 도시에 맞는 전체 게시물 조회
