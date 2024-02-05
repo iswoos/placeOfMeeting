@@ -70,6 +70,9 @@ public class PostService {
 
     @Transactional
     public String createPost(MultipartFile file ,PostRequest.PostCreate postCreate, Member member) throws IOException {
+
+        String imgurl = "";
+
         if (file != null && !file.isEmpty()) {
             String fileName = CommonUtils.buildFileName(file.getOriginalFilename());
             ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -81,9 +84,11 @@ public class PostService {
 
             amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, byteArrayIs, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
+
+            imgurl = amazonS3Client.getUrl(bucketName, fileName).toString();
         }
 
-        postRepository.save(new Post(member, postCreate));
+        postRepository.save(new Post(member, postCreate, imgurl));
 
         return "게시물 등록완료";
     }
