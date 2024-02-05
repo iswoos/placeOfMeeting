@@ -39,13 +39,17 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String cityName;
 
+    @Column
+    private String imgUrl;
+
     @Enumerated(EnumType.STRING)
     private PostAndChatType postType;
 
-    public Post(Member member, PostCreate postCreate) {
+    public Post(Member member, PostCreate postCreate, String imgurl) {
         this.member = member;
         this.title = postCreate.getTitle();
         this.context = postCreate.getContext();
+        this.imgUrl = imgurl;
         this.cityName = member.getCityName();
         this.postType = PostAndChatType.valueOf(postCreate.getPostType());
     }

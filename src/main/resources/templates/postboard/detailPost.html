@@ -23,6 +23,7 @@
                 let likeNum = post.likeNum;
                 let commentNum = post.commentNum;
                 let cityName = post.cityName;
+                let imgUrl = post.imgUrl;
                 let createdAt = post.createdAt.slice(0,10) + ' ' + post.createdAt.slice(11,16) ;
 
 
@@ -35,6 +36,9 @@
                 $('#likeNum').append(likeNum);
                 $('#commentNum').append("댓글 수:" + ' ' +commentNum);
                 $('#userNamecreatedAt').append(userName + " | " + createdAt);
+
+                $('#postImage').attr('src', imgUrl);
+
 
                 for(let i=0; i<comments.length; i++){
                     let comment = comments[i];
@@ -120,6 +124,11 @@
 <p id="title"></p>
 <p id="userNamecreatedAt"></p>
 <p id = "context"></p>
+
+<div id="imageContainer">
+    <img id="postImage" alt="게시글 이미지">
+</div>
+
 <p id = "commentNum"></p>
 
 <button id = "likeNum" type="button" onclick="likePost()"></button>

@@ -27,40 +27,46 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-    function createPost() {
-        let token = localStorage.getItem("Authorization");
+        function createPost() {
+            let token = localStorage.getItem("Authorization");
 
-        if($("#title").val() ==''){
-            alert("글 제목을 입력해주세요")
-        }
-
-        if($("#context").val() ==''){
-            alert("글 내용을 입력해주세요")
-        }
-
-        else{
-        var data = {
-            "title": $("#title").val(),
-            "context": $("#context").val(),
-            "postType" : $("#postType").val()
-        }
-
-         $.ajax({
-            url: "/posts",
-            type: "POST",
-            headers: {'Content-Type': 'application/json', 'Authorization': token},
-            data: JSON.stringify(data),
-            success: function(response) {
-                alert("게시글 등록완료");
-                window.history.back();
-            },
-            error: function(xhr, status, error) {
-                console.log(error);
+            if ($("#title").val() == '') {
+                alert("글 제목을 입력해주세요");
+                return;
             }
-        });
-        }
-    }
 
+            if ($("#context").val() == '') {
+                alert("글 내용을 입력해주세요");
+                return;
+            }
+
+            var postDto = {
+                title: $("#title").val(),
+                context: $("#context").val(),
+                postType: $("#postType").val()
+            };
+
+            var formData = new FormData();
+            formData.append("file", $("#image")[0].files[0]);
+            formData.append("postData", new Blob([JSON.stringify(postDto)], { type: "application/json" }));
+
+
+            $.ajax({
+                url: "/posts",
+                type: "POST",
+                headers: {'Authorization': token},
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert("게시글 등록완료");
+                    window.history.back();
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
     </script>
 </head>
 
@@ -76,6 +82,10 @@
     <div class="mb-3">
         <label for="context" class="form-label">내용</label>
         <input class="form-control" id="context">
+    </div>
+    <div class="mb-3">
+        <label for="image" class="form-label">이미지 업로드</label>
+        <input type="file" class="form-control" id="image" accept="image/*">
     </div>
     <button type="button" onclick="createPost()" class="loginBtn btn btn-primary form-control" style="height: 50px">
         등록
