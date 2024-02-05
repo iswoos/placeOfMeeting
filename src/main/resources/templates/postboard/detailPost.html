@@ -37,8 +37,12 @@
                 $('#commentNum').append("댓글 수:" + ' ' +commentNum);
                 $('#userNamecreatedAt').append(userName + " | " + createdAt);
 
-                $('#postImage').attr('src', imgUrl);
-
+                if (imgUrl) {
+                    $('#postImage').attr('src', imgUrl);
+                    $('#imageContainer').show(); // 이미지 컨테이너를 보이게 함
+                } else {
+                    $('#imageContainer').hide(); // 이미지 컨테이너를 숨김
+                }
 
                 for(let i=0; i<comments.length; i++){
                     let comment = comments[i];
