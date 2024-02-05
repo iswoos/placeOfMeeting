@@ -62,6 +62,8 @@ public class PostResponse {
 
         private String cityName;
 
+        private String imgUrl;
+
         private LocalDateTime createdAt;
 
         private List<getComment> comments;
@@ -73,6 +75,7 @@ public class PostResponse {
             this.likeNum = post.getLikeNum();
             this.commentNum = post.getCommentNum();
             this.cityName = post.getCityName();
+            this.imgUrl = post.getImgUrl();
             this.createdAt = post.getCreatedAt();
             this.comments = comments;
         }
