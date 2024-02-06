@@ -22,10 +22,13 @@ public class ChatRoomResponse {
 
         private PostAndChatType postAndChatType; // 룸 타입
 
+        private String ChatType;
+
         public ChatRoomResDto(ChatRoom chatRoom) {
             this.id = chatRoom.getId();
             this.cityName = chatRoom.getCityName();
             this.postAndChatType = chatRoom.getPostAndChatType();
+            this.ChatType = chatRoom.getPostAndChatType().getValue();
         }
     }
 }

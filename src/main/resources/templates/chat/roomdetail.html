@@ -19,7 +19,7 @@
 </div>
 <div class="container" id="app" v-cloak>
     <div>
-        <h2>{{this.roomId}}</h2>
+        <h2>{{this.roomType}}</h2>
     </div>
     <div id="binary" class="list-group">
         <div class="list-group-item" v-for="message in messages" :class="{ 'text-right': message.sender === vm.sender, 'text-left': message.sender !== vm.sender }">
@@ -55,6 +55,7 @@
             message: '',
             messages: [],
             othersender: '',
+            roomType: '',
         },
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
@@ -67,6 +68,7 @@
                 const config = { headers: { Authorization: `${token}` } };
                 axios.get('/chat/room/'+this.roomId, config).then(response => {
                     this.room = response.data.data.postAndChatType;
+                    this.roomType = response.data.data.chatType;
                 });
             },
             sendMessage: function() {
