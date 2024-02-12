@@ -3,6 +3,7 @@ package com.example.placemeeting.dto.responsedto;
 import com.example.placemeeting.domain.Comment;
 import com.example.placemeeting.domain.Member;
 import com.example.placemeeting.domain.Post;
+import com.example.placemeeting.domain.PostAndChatType;
 import com.example.placemeeting.dto.reqeustdto.CommentRequest;
 import com.example.placemeeting.dto.reqeustdto.CommentRequest.getComment;
 import lombok.AllArgsConstructor;
@@ -79,6 +80,19 @@ public class PostResponse {
             this.createdAt = post.getCreatedAt();
             this.comments = comments;
         }
+    }
+
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class mostPopularPostResDto {
+        private Long postId;
+
+        private String title;
+
+        private PostAndChatType postAndChatType;
+
     }
 
 }

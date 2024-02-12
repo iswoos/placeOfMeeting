@@ -3,6 +3,7 @@ package com.example.placemeeting.controller;
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostMainResDto;
+import com.example.placemeeting.dto.responsedto.PostResponse.mostPopularPostResDto;
 import com.example.placemeeting.global.dto.ResponseDto;
 import com.example.placemeeting.security.user.UserDetailsImpl;
 import com.example.placemeeting.service.PostService;
@@ -57,5 +58,11 @@ public class PostController {
     @DeleteMapping("/posts/{postId}")
     public ResponseDto<String> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(postService.deletePost(postId, userDetails.getAccount()));
+    }
+
+    // 가장 인기있는 게시물, 게시물 타입당 10개 선정하여 post id및 타이틀 제목 추출
+    @GetMapping("/posts/popular")
+    public ResponseDto<List<mostPopularPostResDto>> mostPopularPosts() {
+        return ResponseDto.success(postService.mostPopularPosts());
     }
 }
