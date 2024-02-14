@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -14,4 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p where p.id = :postId")
     Post detailPost(@Param("postId") Long postId);
+
+    List<Post> findByCreatedAtAfterOrderByLikeNumDescCreatedAtDesc(LocalDateTime dateTime);
+
 }

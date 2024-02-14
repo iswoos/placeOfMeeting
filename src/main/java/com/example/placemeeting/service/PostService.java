@@ -9,7 +9,7 @@ import com.example.placemeeting.config.CommonUtils;
 import com.example.placemeeting.domain.*;
 import com.example.placemeeting.dto.reqeustdto.CommentRequest.getComment;
 import com.example.placemeeting.dto.reqeustdto.PostRequest;
-import com.example.placemeeting.dto.reqeustdto.PostRequest.PostCreate;
+import com.example.placemeeting.dto.responsedto.PostResponse;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostDetailResDto;
 import com.example.placemeeting.dto.responsedto.PostResponse.PostMainResDto;
 import com.example.placemeeting.exception.CustomCommonException;
@@ -25,8 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -153,4 +153,49 @@ public class PostService {
 
         return "게시물 삭제완료";
     }
+
+    @Transactional(readOnly = true)
+    public List<PostResponse.mostPopularPostResDto> mostPopularPosts() {
+        // 각 타입별로 최대 10개의 게시물을 가져오는 Map을 초기화합니다.
+        Map<PostAndChatType, List<Post>> popularPostsMap = new HashMap<>();
+        for (PostAndChatType type : PostAndChatType.values()) {
+            popularPostsMap.put(type, new ArrayList<>());
+        }
+
+        // 7일 이내의 모든 게시물을 가져옵니다.
+        List<Post> mostPopularPostList = postRepository.findByCreatedAtAfterOrderByLikeNumDescCreatedAtDesc(LocalDateTime.now().minusDays(7));
+
+        // 타입별로 최대 10개까지만 가져와서 Map에 추가합니다.
+        for (Post post : mostPopularPostList) {
+            List<Post> postsOfType = popularPostsMap.get(post.getPostType());
+            if (postsOfType.size() < 10) {
+                postsOfType.add(post);
+            }
+        }
+
+        // Map에 있는 모든 게시물을 모아서 리스트로 반환합니다.
+        List<PostResponse.mostPopularPostResDto> result = new ArrayList<>();
+        for (List<Post> postsOfType : popularPostsMap.values()) {
+            result.addAll(postsOfType.stream()
+                    .map(post -> new PostResponse.mostPopularPostResDto(post.getId(), post.getTitle(), post.getPostType()))
+                    .collect(Collectors.toList()));
+        }
+
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+//        List<Post> mostPopularPostList = postRepository.findByCreatedAtAfterOrderByLikeNumDescCreatedAtDesc(LocalDateTime.now().minusDays(7));
+//
+//        return mostPopularPostList.stream()
+//                .map(post -> new PostResponse.mostPopularPostResDto(post.getId(), post.getTitle(), post.getPostType()))
+//                .collect(Collectors.toList());
+
 }

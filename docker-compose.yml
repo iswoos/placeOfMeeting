@@ -25,3 +25,9 @@ services:
       - 3308:3306
     # 항상 재시작합니다.
     restart: always
+  redis:
+    image: redis
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
