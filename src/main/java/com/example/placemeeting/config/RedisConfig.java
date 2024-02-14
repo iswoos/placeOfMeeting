@@ -36,8 +36,8 @@ public class RedisConfig {
     * 알아볼 수 없는 형태로 출력되기 때문에 해당 설정을 적용해주어야 하는것이다
      * */
     @Bean
-    public RedisTemplate<?,?> redisTemplate(){
-        RedisTemplate<byte[], byte[]> redisTemplate=new RedisTemplate<>();
+    public RedisTemplate<String, String> redisTemplate(){
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
