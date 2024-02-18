@@ -1,5 +1,7 @@
 package com.example.placemeeting.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +18,7 @@ import com.example.placemeeting.repository.MemberRepository;
 import com.example.placemeeting.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -35,6 +39,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisTemplate redisTemplate;
+    private final ObjectMapper objectMapper;
 
     @Value("${naver.api.client-id}")
     private String clientId;
@@ -147,7 +153,7 @@ public class MemberService {
 
 
     @Transactional
-    public Map<String, Object> getLocation(Member member) throws JSONException{
+    public Map<String, Object> getLocation(Member member) throws JSONException {
 
         String lng = member.getLongitude().toString();
         String lat = member.getLatitude().toString();
@@ -155,27 +161,58 @@ public class MemberService {
         String cityName = member.getCityName();
         String userName = member.getUserName();
 
-        // OpenWeather API 호출
-        RestTemplate restTemplate2 = new RestTemplate();
-        HttpHeaders headers2 = new HttpHeaders();
-        headers2.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity2 = new HttpEntity<>(headers2);
-        ResponseEntity<String> responseEntity2 = restTemplate2.exchange(
-                WEATHER_API_URL, HttpMethod.GET, requestEntity2, String.class, lat, lng, weatherKey);
-        String responseBody2 = responseEntity2.getBody();
-        JSONObject weatherObject = new JSONObject(responseBody2);
-        JSONArray weatherArray = weatherObject.getJSONArray("weather");
-        String weatherStatus = weatherArray.getJSONObject(0).getString("description");
-        JSONObject mainObject = weatherObject.getJSONObject("main");
-        double temperature = mainObject.getInt("temp");
+        // Redis에 cityName을 키로 하는 데이터가 있는지 확인
+        Object weatherInfoObject = redisTemplate.opsForValue().get(cityName);
+        String weatherInfo = null;
+        if (weatherInfoObject != null) {
+            weatherInfo = weatherInfoObject.toString();
+        }
 
-        // 결과 반환
-        Map<String, Object> result = new HashMap<>();
-        result.put("cityName", cityName);
-        result.put("weatherStatus", weatherStatus);
-        result.put("temperature", temperature);
-        result.put("userName", userName);
+        // Redis에 데이터가 없으면 새로 저장하고, 있으면 가져와서 결과에 포함
+        if (weatherInfo == null) {
+            // OpenWeather API 호출
+            RestTemplate restTemplate2 = new RestTemplate();
+            HttpHeaders headers2 = new HttpHeaders();
+            headers2.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> requestEntity2 = new HttpEntity<>(headers2);
+            ResponseEntity<String> responseEntity2 = restTemplate2.exchange(
+                    WEATHER_API_URL, HttpMethod.GET, requestEntity2, String.class, lat, lng, weatherKey);
+            String responseBody2 = responseEntity2.getBody();
+            JSONObject weatherObject = new JSONObject(responseBody2);
+            JSONArray weatherArray = weatherObject.getJSONArray("weather");
+            String weatherStatus = weatherArray.getJSONObject(0).getString("description");
+            JSONObject mainObject = weatherObject.getJSONObject("main");
+            double temperature = mainObject.getInt("temp");
 
-        return result;
+            // Redis에 cityName을 키로하여 weatherStatus와 temperature를 JSON 형태로 저장
+            JSONObject weatherData = new JSONObject();
+            weatherData.put("weatherStatus", weatherStatus);
+            weatherData.put("temperature", temperature);
+            // 만료 시간을 5분으로 설정
+            Duration expiration = Duration.ofMinutes(5);
+            redisTemplate.opsForValue().set(cityName, weatherData.toString(), expiration);
+
+            // 결과 반환
+            Map<String, Object> result = new HashMap<>();
+            result.put("cityName", cityName);
+            result.put("weatherStatus", weatherStatus);
+            result.put("temperature", temperature);
+            result.put("userName", userName);
+
+            return result;
+        } else {
+            // Redis에 저장된 데이터를 가져와서 결과에 포함
+            JSONObject existingData = new JSONObject(weatherInfo);
+            String weatherStatus = existingData.getString("weatherStatus");
+            double temperature = existingData.getDouble("temperature");
+
+            // 결과 반환
+            Map<String, Object> result = new HashMap<>();
+            result.put("cityName", cityName);
+            result.put("weatherStatus", weatherStatus);
+            result.put("temperature", temperature);
+            result.put("userName", userName);
+            return result;
+        }
     }
 }
